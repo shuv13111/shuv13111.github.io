@@ -1,279 +1,32 @@
-<!DOCTYPE HTML>
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<title>Shuv's Portfolio</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-	<link rel="stylesheet" href="assets/css/main.css" />
-	<noscript>
-		<link rel="stylesheet" href="assets/css/noscript.css" />
-	</noscript>
-	<style>
-		#wrapper {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			min-height: 100vh;
-			flex-direction: column;
-		}
-
-		body {
-			background-image: url("images/Background_gihub.jpg");
-			background-repeat: no-repeat;
-			background-size: cover;
-			background-position: center;
-			backdrop-filter: blur(1px);
-		}
-	</style>
+  <meta charset="UTF-8" />
+  <title>Swirling Particles with Glow</title>
+  <link rel="stylesheet" href="assets/css/landing.css">
+  
+  <!-- Only include the main Three.js library here if needed globally, -->
+  <!-- or remove it if you import everything in graph.js -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.152.0/build/three.min.js"></script> -->
+  <style>
+    /* Your CSS styles here or in landing.css */
+    html, body { margin: 0; padding: 0; overflow: hidden; background-color: #111; /* Example BG */ }
+    #container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+    .overlay-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; text-align: center; z-index: 1; }
+    /* Add other styles for overlay-text */
+  </style>
 </head>
-
-<body class="is-preload">
-	<!-- Wrapper -->
-	<div id="wrapper">
-		<!-- Header -->
-		<header id="header">
-			<div class="logo">
-				<span class="icon fa-gem"></span>
-			</div>
-			<div class="content">
-				<div class="inner">
-					<h1>Shuvrangshu Mukhopadhyay</h1>
-					<h2>Data Analyst | Data Engineer | Data Scientist</h2>
-					<p>Analytics professional with a demonstrated history of working in the information technology and
-						services industry.</p>
-				</div>
-			</div>
-			<nav>
-				<ul>
-					<li><a href=" #intro">Intro</a></li>
-					<li><a href="#work">Work</a></li>
-					<li><a href="#project">Projects</a></li>
-					<li><a href="#blog">Blog</a></li>
-					<li><a href="#contact">Contact</a></li>
-				</ul>
-			</nav>
-		</header>
-		<!-- Main -->
-		<div id="main">
-			<!-- Intro -->
-			<article id="intro">
-				<h2 class="major">Intro</h2>
-				<span class="image main"><img src="images/Face.jpg" alt="" style="width: 20%; " /></span>
-				<p>As a highly qualified analytics professional with a background in the IT industry, I offer a strong
-					set of skills in data analysis and consumer behaviorr modeling. My proven track record of using
-					statistical analysis to make data-driven decisions and derive valuable insights from data sets has
-					allowed me to make a positive impact in my previous roles.</p>
-				<p>I am currently pursuing a Master's in Business Analytics & Information Systems at the University of
-					South Florida, where I am specializing in the Data Science & Data Analytics track. This program has
-					enabled me to further enhance my knowledge of data analysis and gain exposure to the latest tools
-					and techniques in the field.</p>
-			</article>
-			<!-- Work -->
-			<article id="work">
-				<h2 class="major">Work</h2>
-				<span class="image main"><img src="images/Ashley_Logo.jpg" alt="" /></span>
-				<p><strong>Ashley Furniture Industries | Data Analytics Intern (Retail) | Tampa, FL, USA</strong></p>
-				<p>May 2023 - Present</p>
-				<ul>
-					<li>Boosted product discovery by 20% by reclassifying 1,000+ SKUs with AI tools, like Large Language
-						Models, RAG, Prompt tuning & ChromaDB</li>
-					<li>Utilized MLflow for tracking, logging, & registering models to deploy AI apps & enhance
-						operational efficiency across 5 business teams</li>
-					<li>Achieved 96% search accuracy by reducing false positives in mobile app using ResNet-50, & BERT
-						(Transformer), enhancing multi-modal search</li>
-					<li>Streamlined access to demographic data by automating the aggregation of over 10,000 vendor
-						reports using Selenium & EKS</li>
-					<li>Enhanced data analysis speed by integrating multiple data sources on Databricks & designing an
-						AWS Redshift schema</li>
-					<li>Revamped ETL pipelines in AWS Glue by tuning SQL (Stored Procedures) queries, reducing data
-						processing time by 35%</li>
-					<li>Developed statistical models to identify, analyze, and recommend areas for improvement in
-						marketing, finance, and operations, collaborating with cross-functional teams to implement
-						data-driven solutions</li>
-					<li>Developed an end-to-end data science solution using Python, SQL, and Databricks to optimize
-						product assortment across multiple store locations resulting in a 15% increase in customer
-						satisfaction and a 10% improvement in store performance</li>
-				</ul>
-				<span class=" image main"><img src="images/USF.png" alt="" /></span>
-				<p><strong>University of South Florida | Research Assistant - Big Data | Tampa, FL</strong></p>
-				<p>Jan 2023 - May 2023</p>
-				<ul>
-					<li>Teamed up with academics of IIMs on outlet recommendation project, processing 100 Petabytes of
-						Mobile App Usage & Geolocation data</li>
-					<li>Built scalable CI/CD pipelines, resulting in approx. 40% reduction in processing time through
-						efficient task distribution & parallel processing</li>
-					<li>Utilized RESTful API to retrieve & normalize complex nested JSON data, streamlining data
-						processing & extraction</li>
-				</ul>
-				<span class=" image main"><img src="images/Khoros_Logo.jpg" alt="" /></span>
-				<p><strong>Khoros India R&D Pvt Ltd | Data Analyst(Insights) | Bengaluru, India</strong></p>
-				<p>Mar 2021 - Aug 2022</p>
-				<ul>
-					<li>Applied SQL & Excel to analyze data of 500,000+ sales transactions and 10,000+ customer feedback
-						responses, uncovering key CX issues.</li>
-					<li>Crafted compelling visualizations using Power BI to drive 20% improvement in customer retention
-						by telling the story behind the numbers.</li>
-					<li>Leveraged web analytics & SQL to extract and report on over 500,000 data points on a
-						monthly/quarterly/yearly basis.</li>
-					<li>Mined and analyzed over 50,000 product reviews to identify customer behavior patterns and
-						provide actionable insights to clients, resulting in a 13% increase in return on investment.
-					</li>
-					<li>Analyzed 20+ performance metrics (including NPS scores, sales data, and efficiency measures) to
-						identify areas for improvement and optimize the performance of clients in the retail,
-						healthcare, and finance sectors.</li>
-					<li>Awarded Employee of the Quarter in Q2 2021 for developing a Python and Excel based
-						keyword-industry mapping tool, resulting in an 80% reduction in manual efforts.</li>
-				</ul>
-				<span class=" image main"><img src="images/AIG_Logo.png" alt="" /></span>
-				<p><strong>American International Group (AIG) | Data Analyst | Bengaluru, India </strong></p>
-				<p>Jun 2017 – Mar 2021</p>
-				<ul>
-					<li>Collaborated with the cross-functional teams to streamline processes, reducing turnaround time
-						for new businesses by 60%.</li>
-					<li>Utilized probabilistic loss estimate models in GES to assess risk for $40B in insured value and
-						reduced loss estimates by up to 30% through improved assumptions and modeling techniques.</li>
-					<li>Automated historical data extraction using Fuzzy Logic with Python and Excel, resulting in 40%
-						reduction in processing time.</li>
-					<li>Designed and maintained productivity reports for a team of 25+ using Power BI and Excel,
-						incorporating real-time KPIs.</li>
-					<li>Automated weekly turnaround time report using Python & Excel, reducing manual effort by 70%.
-					</li>
-					<li>Collaborated with business stakeholders to define and document client requirements, ensuring
-						alignment with business objectives.</li>
-					<li>Analyzed risks in a $2B insurance portfolio through data mining in collaboration.</li>
-				</ul>
-				<span class=" image main"><img src="images/Capgemini_Logo.jpg" alt="" /></span>
-				<p><strong>Capgemini | Software Developer | Bengaluru, India </strong></p>
-				<p>Nov 2016 – Jun 2017</p>
-				<ul>
-					<li>Designed and implemented customized reporting dashboards using Power BI, delivering real-time
-						insights to inform business decisions</li>
-					<li>Optimized queries in IBM DB2, improved response times by 15%, and led training sessions to
-						upskill non-technical stakeholders</li>
-				</ul>
-			</article>
-			<!-- About -->
-			<article id="project">
-				<h2 class="major">Projects</h2>
-				<span class="image main"><img src="images/Click Conversion rate.png" alt="" /></span>
-				<p><strong><a href="https://github.com/shuv13111/Predicting-Click-Conversion-Rate"
-							target="_blank">Predicting Click Conversion Rate (R, Statistics)</strong></p></a>
-				<ul>
-					<li>Using advanced ML techniques, our research project was able to predict click conversion
-						rates
-						with an impressive accuracy of 85%, shedding light on the enormous potential of data-driven
-						strategies in the competitive ecommerce landscape.</li>
-					<li>Our project successfully developed a predictive model that achieved a 20% improvement in
-						targeting accuracy compared to traditional methods, underscoring the transformative power of
-						data-driven decision making in optimizing ecommerce marketing strategies.</li>
-				</ul>
-				<span class="image main"><img src="images/EcoMobile.png" alt="" /></span>
-				<p><strong><a
-							href="https://github.com/shuv13111/EcoMobile-The-Economic-Relationship-between-Mobile-Apps-and-Customer-Location-Data"
-							target="_blank">Exploring
-							Economic Correlations in Mobile Data ( Python, SQL, Hadoop, Linux, Amazon S3)</strong></p>
-				</a>
-				</p>
-				<ul>
-					<li>Collaborated with renowned academics from IIM Calcutta on the groundbreaking "EcoMobile"
-						project, leveraging Python/Linux scripting to dissect massive JSON datasets from mobile
-						usage
-						and geolocation, unveiling pivotal economic relationships within the U.S market.</li>
-					<li>Employed advanced ML methods to convert mobile and location data into actionable insights,
-						thereby facilitating personalized marketing and boosting customer engagement.</li>
-				</ul>
-				<span class="image main"><img src="images/SQLMDb.png" alt="" /></span>
-				<p><strong><a href="https://github.com/shuv13111/SQLMDB-MovieRating-Analysis" target="_blank">Queries to
-							analyze movies dataset</strong></p></a>
-				<ul>
-					<li>The following is a professional series of analysis on movies utilizing a database sourced
-						from
-						IMDb. This analysis was conducted as part of the Advanced Database Management Systems
-						(ADBMS)
-						class at the University of South Florida. The Entity-Relationship (ER) diagram used in this
-						analysis was sourced from Dr. Berdnt's textbook on database management systems.</li>
-				</ul>
-				<span class="image main"><img src="images/AReM Project.png" alt="" /></span>
-				<p><strong><a href="https://github.com/shuv13111/Activity-Recognition-Classification"
-							target="_blank">Activity Recognition Classification</strong></p></a>
-				<ul>
-					<li>This project focuses on classifying human activities using the AREM dataset. We
-						employ
-						various ensemble methods to improve the accuracy and robustness of the classification.</li>
-					<li>The AREM dataset contains data from wearable sensors, including accelerometers and
-						gyroscopes. The dataset captures the movements of individuals performing different
-						activities
-						such as walking, running, sitting, and standing.</li>
-					<li>Data preprocessing and normalization. Feature extraction from raw sensor data.
-						Implementation of various ensemble methods. Model evaluation and comparison.</li>
-					<li>Bagging with Decision Trees Random Forest AdaBoost Gradient Boosting
-						Stacking with diverse base classifiers</li>
-					<li>Python 3.x Scikit-learn Pandas Numpy Matplotlib (for visualization)</li>
-				</ul>
-			</article>
-			<!-- Blank Blog Section -->
-			<article id="blog">
-				<div>
-					<h3>Title: Unveiling Bias in AI: Navigating the Ethical Landscape</h3>
-					<p>In an era dominated by the rapid evolution of artificial intelligence (AI) systems, ensuring
-						fairness and equity in these technologies has emerged as a critical imperative. The
-						proliferation of AI across diverse sectors, ranging from healthcare to social media, underscores
-						the impact it wields on our daily lives. However, amid the capabilities
-						of AI, lurks a formidable challenge: bias.</p>
-					<p>Recently, I came across an insightful article titled "Designing AI for All: A Primer on Bias in
-						Artificial Intelligence Systems," which delves into the intricate nuances of bias within AI
-						frameworks. Authored by esteemed researchers at Stanford University, the article provides a
-						comprehensive analysis of the multifaceted dimensions of bias in AI and offers actionable
-						solutions to mitigate its adverse effects.</p>
-					<p>One of the key takeaways from the article is the nature of bias, which permeates AI
-						systems across various industries. Take, for instance, the healthcare sector, where AI-powered
-						diagnostic tools hold promise in revolutionizing patient care. However, the presence of
-						bias within these systems could potentially worsen healthcare disparities,
-						affecting communities. By existing biases prevalent
-						in historical data, AI algorithms risk boosting inequalities rather than eliminating them.</p>
-					<p>Moreover, the effects of bias in AI extend beyond ethical considerations to organizational
-						impact. As businesses increasingly rely on AI-driven insights to drive decision-making
-						processes, the presence of biased algorithms could lead to flawed outcomes, tarnishing
-						organizational reputation and reducing consumer trust. Thus, organizations must prioritize the
-						development of ethically sound AI systems to uphold integrity and accountability in their
-						operations.</p>
-					<p>Furthermore, the advent of biased AI systems poses implications for careers in data
-						analytics. As professionals tasked with designing and deploying AI solutions, data analysts bear
-						a moral responsibility to address bias proactively. By incorporating ethical considerations into
-						their analytical frameworks and leveraging techniques such as fairness-aware machine learning,
-						data analysts can play a pivotal role in fostering a culture of ethical AI within their
-						organizations.</p>
-					<p>In essence, the article serves as a reminder of the ethical imperatives inherent in the
-						realm of AI. As flag bearers of technological innovation, it is incumbent upon us to navigate
-						the ethical landscape of AI with vigilance and integrity. By embracing ethical principles and
-						championing fairness and equity in AI systems, we can pave the path for a future where
-						technology serves as a force for good, empowering individuals and communities alike.</p>
-				</div>
-			</article>
-			<!-- Contact -->
-			<article id="contact">
-				<h2 class="major">Contact</h2>
-				<ul class="icons">
-					<li><a href="https://www.linkedin.com/in/shuv93" class="icon brands fa-linkedin large-icon"><span
-								class="label">LinkedIn</span></a></li>
-					<li><a href="https://github.com/shuv13111" class="icon brands fa-github large-icon"><span
-								class="label">GitHub</span></a></li>
-					<li><a href="mailto:shuv13111@gmail.com" class="icon solid fa-envelope large-icon"><span
-								class="label">Email</span></a></li>
-				</ul>
-			</article>
-
-		</div>
-	</div>
-	<!-- BG -->
-	<div id="bg"></div>
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
+<body>
+  <!-- Overlay text for your landing page -->
+  <div class="overlay-text">
+    <h1>Your Name</h1>
+    <p>Data Scientist | Machine Learning Enthusiast</p>
+  </div>
+  
+  <!-- Container where the Three.js canvas will be rendered -->
+  <div id="container"></div>
+  
+  <!-- Change script type to module -->
+  <script type="module" src="assets/js/graph.js"></script>
 </body>
-
 </html>
