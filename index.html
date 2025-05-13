@@ -1,32 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Swirling Particles with Glow</title>
-  <link rel="stylesheet" href="assets/css/landing.css">
-  
-  <!-- Only include the main Three.js library here if needed globally, -->
-  <!-- or remove it if you import everything in graph.js -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.152.0/build/three.min.js"></script> -->
-  <style>
-    /* Your CSS styles here or in landing.css */
-    html, body { margin: 0; padding: 0; overflow: hidden; background-color: #111; /* Example BG */ }
-    #container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-    .overlay-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; text-align: center; z-index: 1; }
-    /* Add other styles for overlay-text */
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shuvrangshu Mukhopadhyay | AI/ML Systems Manager</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Overlay text for your landing page -->
-  <div class="overlay-text">
-    <h1>Your Name</h1>
-    <p>Data Scientist | Machine Learning Enthusiast</p>
-  </div>
-  
-  <!-- Container where the Three.js canvas will be rendered -->
-  <div id="container"></div>
-  
-  <!-- Change script type to module -->
-  <script type="module" src="assets/js/graph.js"></script>
+    <!-- Background animation container -->
+    <div id="bg-animation"></div>
+    
+    <!-- Header & Navigation -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content -->
+    <main class="content">
+        <section id="hero" class="hero">
+            <div class="hero-content">
+                <h1>Shuvrangshu Mukhopadhyay</h1>
+                <p class="subtitle">AI/ML Systems Manager</p>
+                <p class="tagline">Crafting Intelligence into Code | Building Tomorrow's AI Today</p>
+                <div class="cta-buttons">
+                    <a href="#projects" class="primary-btn">View Projects</a>
+                    <a href="#contact" class="secondary-btn">Contact Me</a>
+                </div>
+            </div>
+        </section>
+        
+        <section id="about" class="section">
+            <div class="section-container">
+                <h2>About Me</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>I'm an <strong>AI/ML Systems Manager</strong> with over 7 years of experience crafting data-driven solutions across retail, insurance, and SaaS industries.</p>
+                        
+                        <p>My expertise includes:</p>
+                        <ul class="skills-list">
+                            <li>Designing scalable machine learning pipelines</li>
+                            <li>Implementing advanced NLP and Generative AI solutions</li>
+                            <li>Developing Computer Vision applications</li>
+                            <li>Leading cross-functional technical teams</li>
+                            <li>Building efficient, production-ready systems</li>
+                        </ul>
+                        
+                        <p>Outside of work, I enjoy traveling, photography, and engaging with technical communities to share knowledge and foster innovation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <div class="section-container">
+                <h2>Key Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-content">
+                            <h3>Predicting Click Conversion Rate</h3>
+                            <div class="tech-stack">
+                                <span>R</span>
+                                <span>Statistics</span>
+                            </div>
+                            <p>Developed ML models to predict ecommerce click conversion rates with 85% accuracy, improving targeting by 20% over traditional methods.</p>
+                            <a href="https://github.com/shuv13111/Predicting-Click-Conversion-Rate" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> View Project
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-content">
+                            <h3>EcoMobile: Economic Correlations in Mobile Data</h3>
+                            <div class="tech-stack">
+                                <span>Python</span>
+                                <span>Hadoop</span>
+                                <span>AWS S3</span>
+                            </div>
+                            <p>Collaborated with IIM Calcutta to analyze JSON datasets from mobile usage and geolocation, revealing economic patterns in U.S. markets.</p>
+                            <a href="https://github.com/shuv13111/EcoMobile-The-Economic-Relationship-between-Mobile-Apps-and-Customer-Location-Data" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> View Project
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-content">
+                            <h3>Activity Recognition Classification</h3>
+                            <div class="tech-stack">
+                                <span>Python</span>
+                                <span>Scikit-learn</span>
+                                <span>Pandas</span>
+                            </div>
+                            <p>Used ensemble methods to classify human activities from wearable sensor data, achieving high accuracy in movement prediction.</p>
+                            <a href="https://github.com/shuv13111/Activity-Recognition-Classification" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> View Project
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-content">
+                            <h3>SQL Movie Dataset Analysis</h3>
+                            <div class="tech-stack">
+                                <span>SQL</span>
+                                <span>Data Analysis</span>
+                            </div>
+                            <p>Analyzed IMDb movie datasets using advanced SQL techniques as part of ADBMS research at University of South Florida.</p>
+                            <a href="https://github.com/shuv13111/SQLMDB-MovieRating-Analysis" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> View Project
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="section">
+            <div class="section-container">
+                <h2>Experience</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <span class="date">Apr 2024 - Present</span>
+                            <h3>Manager, AI/ML Systems</h3>
+                            <p class="company">Ashley Furniture Industries, Tampa, FL</p>
+                            <ul class="achievements">
+                                <li>Leading a team of 5 engineers in developing ML and Generative AI solutions</li>
+                                <li>Automated compliance review with RAG pipeline, reducing review time from 4 hours to 10 minutes</li>
+                                <li>Implemented Neo4j graph database, enhancing query speed by 30%</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <span class="date">May 2023 - Mar 2024</span>
+                            <h3>Data Scientist</h3>
+                            <p class="company">Ashley Furniture Industries, Tampa, FL</p>
+                            <ul class="achievements">
+                                <li>Developed assortment optimization system using Python and Databricks</li>
+                                <li>Automated demographic data processing using Selenium and Kubernetes</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <span class="date">Mar 2021 - Aug 2022</span>
+                            <h3>Data Scientist</h3>
+                            <p class="company">Khoros India R&D, Bengaluru, India</p>
+                            <ul class="achievements">
+                                <li>Built NLP-driven automation tools, reducing customer service queries by 30%</li>
+                                <li>Optimized click-through rates by 18% through A/B testing and analytics</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <span class="date">Jun 2017 - Mar 2021</span>
+                            <h3>Data Scientist II / I</h3>
+                            <p class="company">American International Group (AIG), Bengaluru, India</p>
+                            <ul class="achievements">
+                                <li>Managed team of 5 analysts improving underwriting risk models</li>
+                                <li>Reduced claims loss by 19% using XGBoost models</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="section-container">
+                <h2>Contact</h2>
+                <div class="contact-content">
+                    <p>Feel free to reach out for collaboration or opportunities.</p>
+                    <div class="contact-links">
+                        <a href="mailto:shuvrangshumukhoapdhyay@gmail.com" class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>shuvrangshumukhoapdhyay@gmail.com</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/shuv93/" target="_blank" class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <span>linkedin.com/in/shuv93</span>
+                        </a>
+                        <a href="https://github.com/shuv13111" target="_blank" class="contact-item">
+                            <i class="fab fa-github"></i>
+                            <span>github.com/shuv13111</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Shuvrangshu Mukhopadhyay. All Rights Reserved.</p>
+        </footer>
+    </main>
+
+    <!-- Script for the background animation -->
+    <script src="assets/js/background.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>

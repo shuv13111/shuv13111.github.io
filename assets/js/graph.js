@@ -6,67 +6,99 @@ import { UnrealBloomPass } from 'https://cdn.jsdelivr.net/npm/three@0.152.0/exam
 
 // Basic Scene Setup
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000);
+scene.background = null; // Changed from 0x000000 to null for transparency
+
+// Add lighting
+const ambientLight = new THREE.AmbientLight(0x404040);
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+directionalLight.position.set(1, 1, 1);
+scene.add(directionalLight);
 
 const camera = new THREE.PerspectiveCamera(
-  60,
+  75, // Increased FOV from 60 to 75 for better visibility
   window.innerWidth / window.innerHeight,
   1,
   3000
 );
-camera.position.z = 800;
+camera.position.z = 1000; // Moved camera back a bit
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
-  alpha: true
+  alpha: true,
+  powerPreference: "high-performance",
+  preserveDrawingBuffer: true
 });
+renderer.setClearColor(0x000000, 0); // Set clear color with 0 alpha
+renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.getElementById('container').appendChild(renderer.domElement);
 
-// Create Particle Geometry with a Spiral Distribution
-const particleCount = 60; // Adjust for performance if needed
-const radius = 1000;        // Overall radius of the swirl
-const spiralTurns = 3;      // Number of spiral turns
-
-const positions = new Float32Array(particleCount * 3);
-const colors = new Float32Array(particleCount * 3);
-
-const startColor = new THREE.Color(0x00ffff); // Cyan (example)
-const endColor = new THREE.Color(0xffffff);   // White
-
-for (let i = 0; i < particleCount; i++) {
-  const t = i / particleCount;
-  const angle = t * spiralTurns * Math.PI * 2;
-  const r = t * radius;
-  
-  // Calculate positions for a spiral in the XY plane with slight randomness in Z
-  const x = r * Math.cos(angle);
-  const y = r * Math.sin(angle);
-  const z = (Math.random() - 0.5) * 200;
-  
-  positions[i * 3]     = x;
-  positions[i * 3 + 1] = y;
-  positions[i * 3 + 2] = z;
-  
-  // Interpolate the color from cyan to white based on t
-  const color = startColor.clone().lerp(endColor, t);
-  colors[i * 3]     = color.r;
-  colors[i * 3 + 1] = color.g;
-  colors[i * 3 + 2] = color.b;
+// Make sure container exists before adding canvas
+const container = document.getElementById('container');
+if (container) {
+    container.innerHTML = ''; // Clear any existing content
+    container.appendChild(renderer.domElement);
+} else {
+    console.error('Container element not found!');
 }
 
-const geometry = new THREE.BufferGeometry();
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+// Create Particle Geometry with a Spiral Distribution
+const particleCount = 300; // More stars
+const radius = 1200;      // Larger spread
+const spiralTurns = 10;   // More spiral turns
 
-const material = new THREE.PointsMaterial({
-  size: 3,
-  vertexColors: true,
-  transparent: true
+// Create arrays for custom properties
+const scales = new Float32Array(particleCount);
+const rotationSpeeds = new Float32Array(particleCount);
+
+const startColor = new THREE.Color(0xCCE6FF); // Light blue-white
+const endColor = new THREE.Color(0xFFFFFF);   // Pure white
+
+const material = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    emissive: 0x444444,
+    transparent: true,
+    opacity: 0.95,
+    shininess: 100
 });
 
-const pointCloud = new THREE.Points(geometry, material);
-scene.add(pointCloud);
+const geometry = new THREE.SphereGeometry(1, 16, 16); // Increased segments for smoother spheres
+const points = new THREE.InstancedMesh(geometry, material, particleCount);
+
+// Set position, scale, and color for each instance
+const matrix = new THREE.Matrix4();
+const scale = new THREE.Vector3();
+for (let i = 0; i < particleCount; i++) {
+    const t = i / particleCount;
+    const angle = t * spiralTurns * Math.PI * 2;
+    const r = t * radius;
+    
+    const x = r * Math.cos(angle);
+    const y = r * Math.sin(angle);
+    const z = (Math.random() - 0.5) * 300;
+    
+    // Random scale between 0.8 and 2
+    const starScale = 0.8 + Math.random() * 1.2;
+    scales[i] = starScale;
+    scale.set(starScale, starScale, starScale);
+    
+    // Random rotation speed
+    rotationSpeeds[i] = (Math.random() - 0.5) * 0.002;
+    
+    matrix.compose(
+        new THREE.Vector3(x, y, z),
+        new THREE.Quaternion(),
+        scale
+    );
+    points.setMatrixAt(i, matrix);
+    
+    // Color varies with distance from center
+    const color = startColor.clone().lerp(endColor, t);
+    points.setColorAt(i, color);
+}
+
+scene.add(points);
 
 // Bloom (Glow) Effect Setup
 const composer = new EffectComposer(renderer);
@@ -74,26 +106,58 @@ const renderPass = new RenderPass(scene, camera);
 composer.addPass(renderPass);
 
 const bloomPass = new UnrealBloomPass(
-  new THREE.Vector2(window.innerWidth, window.innerHeight),
-  1.2,  // bloom strength
-  0.4,  // bloom radius
-  0.85  // bloom threshold
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    1.5,  // Adjusted bloom strength
+    1.0,  // Increased bloom radius
+    0.2   // Adjusted threshold
 );
 composer.addPass(bloomPass);
 
 // Animation Loop
 function animate() {
-  requestAnimationFrame(animate);
-  
-  // Slowly rotate the point cloud for a dynamic effect
-  pointCloud.rotation.y += 0.001;
-  pointCloud.rotation.x += 0.0005;
-  
-  // Render the scene with bloom
-  composer.render();
+    requestAnimationFrame(animate);
+    
+    // Base rotation
+    points.rotation.y += 0.0003;
+    points.rotation.x += 0.0001;
+    
+    // Parallax effect based on mouse position
+    const mouseX = (window.mouseX || 0) - window.innerWidth / 2;
+    const mouseY = (window.mouseY || 0) - window.innerHeight / 2;
+    camera.position.x += (mouseX * 0.0002 - camera.position.x) * 0.05;
+    camera.position.y += (-mouseY * 0.0002 - camera.position.y) * 0.05;
+    camera.lookAt(scene.position);
+    
+    // Update individual star positions
+    const tempMatrix = new THREE.Matrix4();
+    const tempPosition = new THREE.Vector3();
+    const tempScale = new THREE.Vector3();
+    const tempQuat = new THREE.Quaternion();
+    
+    for (let i = 0; i < particleCount; i++) {
+        points.getMatrixAt(i, tempMatrix);
+        tempPosition.setFromMatrixPosition(tempMatrix);
+        tempScale.setFromMatrixScale(tempMatrix);
+        
+        // Smoother movement with different frequencies for each star
+        tempPosition.x += Math.sin(Date.now() * 0.0005 + i) * 0.08;
+        tempPosition.y += Math.cos(Date.now() * 0.0004 + i) * 0.08;
+        
+        tempMatrix.compose(tempPosition, tempQuat, tempScale);
+        points.setMatrixAt(i, tempMatrix);
+    }
+    
+    points.instanceMatrix.needsUpdate = true;
+    composer.render();
 }
 
-animate();
+// Track mouse position
+window.mouseX = 0;
+window.mouseY = 0;
+document.addEventListener('mousemove', (event) => {
+    window.mouseX = event.clientX;
+    window.mouseY = event.clientY;
+});
 
 // Handle Window Resize
 window.addEventListener('resize', () => {
@@ -102,3 +166,5 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
   composer.setSize(window.innerWidth, window.innerHeight);
 });
+
+animate();
