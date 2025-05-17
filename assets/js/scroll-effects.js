@@ -57,6 +57,7 @@ function initScrollAnimations() {
         .from('#about h2', { 
             y: 50, 
             opacity: 0,
+            autoAlpha: 0,
             ease: 'power2.out' 
         }, 0)
         .from('.about-content', { 
