@@ -88,24 +88,10 @@ function initScrollAnimations() {
     const experienceTimeline = gsap.timeline({
         scrollTrigger: {
             trigger: '#experience',
-            start: 'top bottom', // Change to trigger as soon as the bottom of the viewport reaches the top of the section
+            start: 'top 80%',
             end: 'bottom center',
-            scrub: false, // Disable scrubbing to make animation happen immediately
+            scrub: true,
             markers: false,
-            toggleActions: 'play none none none', // Play animation once when entering
-            onEnter: () => {
-                console.log("Experience section entered viewport"); // Debugging log
-                // Manually set experience section to visible if needed
-                document.getElementById('experience').style.opacity = 1;
-                document.getElementById('experience').style.visibility = 'visible';
-                
-                // Make timeline items visible
-                document.querySelectorAll('#experience .timeline-item').forEach(item => {
-                    item.style.opacity = 1;
-                    item.style.visibility = 'visible';
-                    item.style.transform = 'none';
-                });
-            }
         }
     });
 

@@ -353,23 +353,6 @@ nav a:hover::after {
     margin: 0 auto;
 }
 
-/* Debug fix for experience section visibility */
-#experience {
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-#experience .timeline-item {
-    opacity: 1 !important;
-    transform: none !important;
-    visibility: visible !important;
-}
-
-#experience h2 {
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
 .timeline:before {
     content: '';
     position: absolute;
