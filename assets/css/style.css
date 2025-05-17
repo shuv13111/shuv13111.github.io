@@ -362,7 +362,7 @@ nav a:hover::after {
 .timeline:before {
     content: '';
     position: absolute;
-    left: calc(2.5rem - 8px + 42px);
+    left: 0;
     top: 0;
     height: 100%;
     width: 2px;
@@ -371,28 +371,12 @@ nav a:hover::after {
 
 .timeline-item {
     position: relative;
-    padding-left: calc(2.5rem + 42px);
+    padding-left: 2.5rem;
     margin-bottom: 3rem;
 }
 
-.timeline-logo {
-    position: absolute;
-    left: 10px;
-    top: 5px;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-}
-
-.timeline-logo img {
-    max-width: 80%;
-    max-height: 80%;
-    object-fit: contain;
+.timeline-item:last-child {
+    margin-bottom: 0;
 }
 
 .timeline-item:before {
