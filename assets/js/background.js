@@ -14,173 +14,122 @@ document.addEventListener('DOMContentLoaded', () => {
     setCanvasSize();
     window.addEventListener('resize', setCanvasSize);
 
-    // Mouse interaction
-    const mouse = {
-        x: undefined,
-        y: undefined,
-        radius: 150 // Interaction radius
+    // Color configurations for different sections
+    const colorSchemes = {
+        hero: {
+            start: { r: 10, g: 25, b: 47 },      // Dark blue
+            mid: { r: 8, g: 35, b: 66 },         // Slightly lighter blue
+            end: { r: 6, g: 15, b: 30 },         // Darker blue
+            waveColors: [
+                '0, 255, 255',                   // Cyan
+                '0, 210, 255',                   // Sky blue
+                '0, 255, 210'                    // Teal
+            ]
+        },
+        about: {
+            start: { r: 15, g: 30, b: 60 },      // Slightly brighter blue
+            mid: { r: 20, g: 40, b: 70 },        // Medium blue
+            end: { r: 10, g: 20, b: 45 },        // Dark blue
+            waveColors: [
+                '80, 200, 255',                  // Light blue
+                '40, 180, 240',                  // Medium blue
+                '0, 210, 255'                    // Sky blue
+            ]
+        }
     };
 
-    window.addEventListener('mousemove', (event) => {
-        mouse.x = event.clientX;
-        mouse.y = event.clientY;
-    });
+    // Current color state
+    let currentColors = {
+        start: { ...colorSchemes.hero.start },
+        mid: { ...colorSchemes.hero.mid },
+        end: { ...colorSchemes.hero.end },
+        waveColors: [...colorSchemes.hero.waveColors]
+    };
 
-    // Touch support for mobile
-    window.addEventListener('touchmove', (event) => {
-        if (event.touches.length > 0) {
-            mouse.x = event.touches[0].clientX;
-            mouse.y = event.touches[0].clientY;
-        }
-    }, { passive: true });
+    // Wave settings
+    const waves = [
+        { amplitude: 50, frequency: 0.005, speed: 0.0005, y: 0.4, opacity: 0.03 },
+        { amplitude: 30, frequency: 0.008, speed: 0.001, y: 0.5, opacity: 0.02 },
+        { amplitude: 60, frequency: 0.003, speed: 0.0008, y: 0.6, opacity: 0.03 }
+    ];
 
-    window.addEventListener('touchend', () => {
-        mouse.x = undefined;
-        mouse.y = undefined;
-    });
+    // Animation time
+    let time = 0;
 
-    // Particle system
-    class Particle {
-        constructor(x, y) {
-            this.x = x;
-            this.y = y;
-            this.size = Math.random() * 1.8 + 0.8;
-            this.baseX = this.x;
-            this.baseY = this.y;
-            this.density = (Math.random() * 30) + 1;
-            this.distance = undefined;
-            this.color = this.getRandomColor();
-            this.opacity = Math.random() * 0.6 + 0.3;
-            
-            // Each particle gets its own frequency and phase for independent movement
-            this.amplitude = Math.random() * 0.8 + 0.1; // How far it moves
-            this.frequency = Math.random() * 0.002 + 0.001; // How fast it cycles
-            this.phase = Math.random() * Math.PI * 2; // Starting point in the cycle
-        }
-
-        getRandomColor() {
-            // Primary colors for the particles - teal/cyan dominant with some variation
-            const colors = [
-                '0, 255, 255',   // Cyan (primary)
-                '0, 210, 255',   // Sky blue
-                '0, 255, 210',   // Teal
-                '0, 180, 210',   // Dark cyan
-                '100, 255, 255', // Light cyan
-            ];
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
-
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
-            ctx.fill();
-        }
-
-        update() {
-            // Wave-like motion that's more gentle and won't cause dizziness
-            const time = Date.now();
-            
-            // X movement - gentle horizontal drift based on sine wave
-            this.x = this.baseX + Math.sin((time * this.frequency) + this.phase) * this.amplitude * 3;
-            
-            // Y movement - gentle vertical drift based on cosine wave with different phase
-            this.y = this.baseY + Math.cos((time * this.frequency) + this.phase + Math.PI/2) * this.amplitude * 2;
-            
-            // Check mouse proximity for interaction effect
-            if (mouse.x !== undefined && mouse.y !== undefined) {
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < mouse.radius) {
-                    // Create repulsion effect
-                    const forceDirectionX = dx / distance;
-                    const forceDirectionY = dy / distance;
-                    const force = (mouse.radius - distance) / mouse.radius;
-                    
-                    const directionX = forceDirectionX * force * this.density * -0.6;
-                    const directionY = forceDirectionY * force * this.density * -0.6;
-                    
-                    this.x += directionX;
-                    this.y += directionY;
-                }
-            }
-        }
+    // Function to interpolate between two colors
+    function lerpColor(color1, color2, factor) {
+        return {
+            r: Math.round(color1.r + factor * (color2.r - color1.r)),
+            g: Math.round(color1.g + factor * (color2.g - color1.g)),
+            b: Math.round(color1.b + factor * (color2.b - color1.b))
+        };
     }
 
-    class Connection {
-        constructor(particle1, particle2, distance) {
-            this.particle1 = particle1;
-            this.particle2 = particle2;
-            this.distance = distance;
-            this.opacity = 0;
-            this.active = false;
-            
-            // Add subtle pulsing to connections
-            this.pulseSpeed = Math.random() * 0.0015 + 0.0005;
-            this.pulsePhase = Math.random() * Math.PI * 2;
-        }
-
-        draw() {
-            // Only draw connections within distance threshold and with some opacity
-            if (this.active && this.opacity > 0.05) {
-                const pulse = 0.2 * Math.sin(Date.now() * this.pulseSpeed + this.pulsePhase);
-                
-                ctx.beginPath();
-                ctx.strokeStyle = `rgba(0, 255, 230, ${(this.opacity * 0.7) + pulse})`; 
-                ctx.lineWidth = 0.5;
-                ctx.moveTo(this.particle1.x, this.particle1.y);
-                ctx.lineTo(this.particle2.x, this.particle2.y);
-                ctx.stroke();
-            }
-        }
-
-        update() {
-            const dx = this.particle1.x - this.particle2.x;
-            const dy = this.particle1.y - this.particle2.y;
-            const currentDistance = Math.sqrt(dx * dx + dy * dy);
-            
-            // Dynamically update connection visibility
-            if (currentDistance < this.distance) {
-                this.active = true;
-                // Fade based on distance
-                this.opacity = 1 - (currentDistance / this.distance);
-            } else {
-                this.active = false;
-                this.opacity = 0;
-            }
-        }
+    // Function to update colors based on scroll progress
+    function updateColors(scrollProgress) {
+        // Interpolate between hero and about color schemes
+        currentColors.start = lerpColor(colorSchemes.hero.start, colorSchemes.about.start, scrollProgress);
+        currentColors.mid = lerpColor(colorSchemes.hero.mid, colorSchemes.about.mid, scrollProgress);
+        currentColors.end = lerpColor(colorSchemes.hero.end, colorSchemes.about.end, scrollProgress);
     }
 
-    // Initialize particles
-    const particleCount = Math.min(180, Math.max(80, Math.floor(window.innerWidth * window.innerHeight / 8000)));
-    let particles = [];
-    let connections = [];
-
-    function init() {
-        particles = [];
-        connections = [];
+    // Draw background gradient
+    function drawBackground() {
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        gradient.addColorStop(0, `rgb(${currentColors.start.r}, ${currentColors.start.g}, ${currentColors.start.b})`);
+        gradient.addColorStop(0.5, `rgb(${currentColors.mid.r}, ${currentColors.mid.g}, ${currentColors.mid.b})`);
+        gradient.addColorStop(1, `rgb(${currentColors.end.r}, ${currentColors.end.g}, ${currentColors.end.b})`);
         
-        // Create particles
-        for (let i = 0; i < particleCount; i++) {
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Draw a subtle wave
+    function drawWave(wave, index) {
+        ctx.beginPath();
+        
+        const y = canvas.height * wave.y;
+        
+        ctx.moveTo(0, y);
+        
+        for (let x = 0; x < canvas.width; x++) {
+            const dx = x * wave.frequency;
+            const dy = Math.sin(dx + time * wave.speed) * wave.amplitude;
+            ctx.lineTo(x, y + dy);
+        }
+        
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.closePath();
+        
+        // Get wave color based on current interpolation
+        const scrollProgress = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--scroll-progress') || 0);
+        const color1 = colorSchemes.hero.waveColors[index];
+        const color2 = colorSchemes.about.waveColors[index];
+        
+        // For simplicity, just switch colors based on scroll threshold
+        const waveColor = scrollProgress > 0.5 ? color2 : color1;
+        
+        ctx.fillStyle = `rgba(${waveColor}, ${wave.opacity})`;
+        ctx.fill();
+    }
+
+    // Add subtle stars/dots
+    function drawStars() {
+        // Create a few subtle stars
+        for (let i = 0; i < 50; i++) {
             const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
-            particles.push(new Particle(x, y));
-        }
-        
-        // Create connections between particles that are close enough
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].baseX - particles[j].baseX;
-                const dy = particles[i].baseY - particles[j].baseY;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                // Create connections only for particles within certain distance
-                if (distance < 250) {
-                    connections.push(new Connection(particles[i], particles[j], 250));
-                }
-            }
+            const y = Math.random() * canvas.height * 0.7; // Keep stars in upper part
+            const size = Math.random() * 1.5 + 0.5;
+            
+            // Fade stars based on scroll progress
+            const scrollProgress = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--scroll-progress') || 0);
+            const opacity = Math.random() * 0.15 + 0.05 - (scrollProgress * 0.05);
+            
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, opacity)})`;
+            ctx.fill();
         }
     }
 
@@ -188,32 +137,35 @@ document.addEventListener('DOMContentLoaded', () => {
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Update and draw
-        particles.forEach(particle => {
-            particle.update();
+        // Get current scroll progress
+        const scrollProgress = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--scroll-progress') || 0);
+        
+        // Update colors based on scroll
+        updateColors(scrollProgress);
+        
+        // Draw background
+        drawBackground();
+        
+        // Draw stars
+        drawStars();
+        
+        // Draw waves
+        waves.forEach((wave, index) => {
+            drawWave(wave, index);
         });
         
-        // Update and draw connections first (behind particles)
-        connections.forEach(connection => {
-            connection.update();
-            connection.draw();
-        });
-        
-        // Draw particles on top
-        particles.forEach(particle => {
-            particle.draw();
-        });
+        // Update time
+        time += 1;
         
         requestAnimationFrame(animate);
     }
 
-    // Initialize on load and when window is resized
-    init();
+    // Set CSS variable for initial state
+    document.documentElement.style.setProperty('--scroll-progress', '0');
+
+    // Start animation
     animate();
     
-    // Reinitialize when window is resized to adapt to new dimensions
-    window.addEventListener('resize', () => {
-        setCanvasSize();
-        init();
-    });
+    // Handle resize
+    window.addEventListener('resize', setCanvasSize);
 });
