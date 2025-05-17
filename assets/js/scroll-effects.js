@@ -91,7 +91,7 @@ function initScrollAnimations() {
             start: 'top 80%',
             end: 'bottom center',
             scrub: true,
-            markers: true,
+            markers: false,
         }
     });
 
