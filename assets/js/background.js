@@ -1,104 +1,115 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Get the background container
     const container = document.getElementById('bg-animation');
     if (!container) return;
 
+    // Create canvas
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     container.appendChild(canvas);
 
+    // Track mouse position
     const mouse = {
         x: undefined,
         y: undefined,
-        radius: 100 // Interaction radius for particles
+        radius: 100
     };
 
-    // Declare particle-related variables and the class itself before they are used
-    let interactiveParticles = [];
-    const interactiveParticleCount = 40;
-
-    // Define the InteractiveParticle class BEFORE it is used by initInteractiveParticles
-    class InteractiveParticle {
-        constructor(x, y) {
-            this.x = x;
-            this.y = y;
-            this.baseX = this.x;
-            this.baseY = this.y;
-            this.size = Math.random() * 2 + 1.5; 
-            this.density = (Math.random() * 15) + 10; 
-            this.color = '255, 255, 255'; 
-            this.opacity = Math.random() * 0.4 + 0.1;
-        }
-
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
-            ctx.fill();
-        }
-
-        update() {
-            // Return to base position
-            this.x += (this.baseX - this.x) * 0.02; 
-            this.y += (this.baseY - this.y) * 0.02;
-
-            // Mouse interaction
-            if (mouse.x !== undefined && mouse.y !== undefined) {
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < mouse.radius) {
-                    const forceDirectionX = dx / distance;
-                    const forceDirectionY = dy / distance;
-                    const force = (mouse.radius - distance) / mouse.radius; 
-                    const moveX = forceDirectionX * force * this.density * -0.8;
-                    const moveY = forceDirectionY * force * this.density * -0.8;
-                    this.x += moveX;
-                    this.y += moveY;
-                }
-            }
-        }
-    }
-
-    // This function now safely uses the pre-declared interactiveParticles array and defined class
-    function initInteractiveParticles() {
-        interactiveParticles = []; // Clear existing particles
-        for (let i = 0; i < interactiveParticleCount; i++) {
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
-            interactiveParticles.push(new InteractiveParticle(x, y)); // Now InteractiveParticle class is defined
-        }
-    }
-
+    // Array to store particles
+    let particles = [];
+    const particleCount = 40;
+    
+    // Canvas sizing
     function setCanvasSize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        initInteractiveParticles(); // Initialize/re-initialize particles on resize
+        // Create particles AFTER canvas is sized
+        createParticles();
     }
-    // Call setCanvasSize once at the start to set initial size and particles
-    setCanvasSize(); 
+    
+    // Create a particle object - avoiding class syntax entirely
+    function createParticle(x, y) {
+        return {
+            x: x,
+            y: y,
+            baseX: x,
+            baseY: y,
+            size: Math.random() * 2 + 1.5,
+            density: (Math.random() * 15) + 10,
+            color: '255, 255, 255',
+            opacity: Math.random() * 0.4 + 0.1,
+            
+            // Methods as object properties
+            draw: function() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+                ctx.fill();
+            },
+            
+            update: function() {
+                // Return to base position
+                this.x += (this.baseX - this.x) * 0.02;
+                this.y += (this.baseY - this.y) * 0.02;
+                
+                // Mouse interaction
+                if (mouse.x !== undefined && mouse.y !== undefined) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < mouse.radius) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const force = (mouse.radius - distance) / mouse.radius;
+                        const moveX = forceDirectionX * force * this.density * -0.8;
+                        const moveY = forceDirectionY * force * this.density * -0.8;
+                        this.x += moveX;
+                        this.y += moveY;
+                    }
+                }
+            }
+        };
+    }
+    
+    // Populate particles array
+    function createParticles() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+            particles.push(createParticle(x, y));
+        }
+    }
+
+    // Initialize canvas and particles
+    setCanvasSize();
     window.addEventListener('resize', setCanvasSize);
 
+    // Mouse events
     window.addEventListener('mousemove', (event) => {
         mouse.x = event.clientX;
         mouse.y = event.clientY;
     });
+    
     window.addEventListener('mouseout', () => {
         mouse.x = undefined;
         mouse.y = undefined;
     });
-     window.addEventListener('touchmove', (event) => {
+    
+    window.addEventListener('touchmove', (event) => {
         if (event.touches.length > 0) {
             mouse.x = event.touches[0].clientX;
             mouse.y = event.touches[0].clientY;
         }
     }, { passive: true });
+    
     window.addEventListener('touchend', () => {
         mouse.x = undefined;
         mouse.y = undefined;
     });
 
-    // Color configurations for different sections
+    // Color schemes for different sections
     const colorSchemes = {
         hero: {
             start: { r: 10, g: 25, b: 47 },      // Dark blue
@@ -142,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Current colors
     let currentColors = {
         start: { ...colorSchemes.hero.start },
         mid: { ...colorSchemes.hero.mid },
@@ -149,14 +161,17 @@ document.addEventListener('DOMContentLoaded', () => {
         waveColors: [...colorSchemes.hero.waveColors]
     };
 
+    // Wave settings
     const waves = [
         { amplitude: 50, frequency: 0.005, speed: 0.0005, y: 0.4, opacity: 0.03 },
         { amplitude: 30, frequency: 0.008, speed: 0.001, y: 0.5, opacity: 0.02 },
         { amplitude: 60, frequency: 0.003, speed: 0.0008, y: 0.6, opacity: 0.03 }
     ];
 
+    // Animation time
     let time = 0;
 
+    // Color interpolation
     function lerpColor(color1, color2, factor) {
         return {
             r: Math.round(color1.r + factor * (color2.r - color1.r)),
@@ -165,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    // Update colors based on scroll position
     function updateColors() {
         const aboutProgress = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--scroll-progress') || 0);
         const projectsProgress = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--projects-progress') || 0);
@@ -203,6 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Draw background gradient
     function drawBackground() {
         const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
         gradient.addColorStop(0, `rgb(${currentColors.start.r}, ${currentColors.start.g}, ${currentColors.start.b})`);
@@ -213,6 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
+    // Draw animated waves
     function drawWave(wave, index) {
         ctx.beginPath();
         const y = canvas.height * wave.y;
@@ -230,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fill();
     }
 
+    // Draw star-like particles
     function drawStars() {
         for (let i = 0; i < 50; i++) {
             const x = Math.random() * canvas.width;
@@ -243,8 +262,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fill();
         }
     }
-    // Note: initInteractiveParticles is now called by setCanvasSize initially.
 
+    // Main animation loop
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         updateColors();
@@ -253,16 +272,20 @@ document.addEventListener('DOMContentLoaded', () => {
         waves.forEach((wave, index) => {
             drawWave(wave, index);
         });
-        interactiveParticles.forEach(p => p.update());
-        interactiveParticles.forEach(p => p.draw());
+        
+        // Update and draw particles
+        particles.forEach(particle => particle.update());
+        particles.forEach(particle => particle.draw());
+        
         time += 1;
         requestAnimationFrame(animate);
     }
 
+    // Set initial CSS variables
     document.documentElement.style.setProperty('--scroll-progress', '0');
     document.documentElement.style.setProperty('--projects-progress', '0');
     document.documentElement.style.setProperty('--experience-progress', '0');
 
-    // Call animate to start the animation loop after all setup.
+    // Start animation
     animate();
 });
