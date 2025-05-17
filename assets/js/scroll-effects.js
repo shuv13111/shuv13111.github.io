@@ -15,7 +15,7 @@ function initScrollAnimations() {
             start: 'top top',
             end: 'bottom top',
             scrub: true,
-            markers: true, // For development - shows trigger points
+            markers: false, // Removed debug markers
         }
     });
 
@@ -49,7 +49,7 @@ function initScrollAnimations() {
             start: 'top 80%',
             end: 'top 20%',
             scrub: true,
-            markers: true, // For development
+            markers: false, // Removed debug markers
         }
     });
 
@@ -66,7 +66,50 @@ function initScrollAnimations() {
             ease: 'power2.out' 
         }, 0.2);
 
-    // Background color transitions
+    // Projects section animations
+    const projectsTimeline = gsap.timeline({
+        scrollTrigger: {
+            trigger: '#projects',
+            start: 'top 80%',
+            end: 'top 20%',
+            scrub: true,
+            markers: false,
+        }
+    });
+
+    projectsTimeline
+        .from('#projects h2', { 
+            y: 50, 
+            opacity: 0,
+            ease: 'power2.out' 
+        }, 0);
+
+    // Experience section animations
+    const experienceTimeline = gsap.timeline({
+        scrollTrigger: {
+            trigger: '#experience',
+            start: 'top 80%',
+            end: 'top 20%',
+            scrub: true,
+            markers: false,
+        }
+    });
+
+    experienceTimeline
+        .from('#experience h2', { 
+            y: 50, 
+            opacity: 0,
+            ease: 'power2.out' 
+        }, 0)
+        .from('.timeline-item', {
+            x: -50,
+            opacity: 0,
+            stagger: 0.2,
+            ease: 'power2.out'
+        }, 0.2);
+
+    // Background color transitions for all sections
+    // Hero to About transition
     gsap.to('#bg-animation', {
         scrollTrigger: {
             trigger: '#about',
@@ -75,10 +118,60 @@ function initScrollAnimations() {
             scrub: true,
         },
         onUpdate: function() {
-            // We'll use this to control our background wave colors and behavior
-            // This is just a placeholder for the POC
             const progress = this.progress();
             document.documentElement.style.setProperty('--scroll-progress', progress);
+        }
+    });
+
+    // About to Projects transition
+    const colorSchemes = [
+        { r: 10, g: 25, b: 47 },   // Hero (dark blue)
+        { r: 15, g: 30, b: 60 },   // About (slightly brighter blue)
+        { r: 20, g: 35, b: 70 },   // Projects (medium blue-purple)
+        { r: 25, g: 20, b: 50 }    // Experience (deep purple)
+    ];
+    
+    // Projects section background transition
+    gsap.to('#bg-animation', {
+        scrollTrigger: {
+            trigger: '#projects',
+            start: 'top 80%',
+            end: 'top 20%',
+            scrub: true,
+        },
+        onUpdate: function() {
+            const progress = this.progress();
+            document.documentElement.style.setProperty('--projects-progress', progress);
+            
+            // Set a custom property for the background.js to use
+            const colorData = JSON.stringify({
+                section: 'projects',
+                progress: progress,
+                colors: colorSchemes
+            });
+            document.documentElement.setAttribute('data-scroll-state', colorData);
+        }
+    });
+    
+    // Experience section background transition
+    gsap.to('#bg-animation', {
+        scrollTrigger: {
+            trigger: '#experience',
+            start: 'top 80%',
+            end: 'top 20%',
+            scrub: true,
+        },
+        onUpdate: function() {
+            const progress = this.progress();
+            document.documentElement.style.setProperty('--experience-progress', progress);
+            
+            // Set a custom property for the background.js to use
+            const colorData = JSON.stringify({
+                section: 'experience',
+                progress: progress,
+                colors: colorSchemes
+            });
+            document.documentElement.setAttribute('data-scroll-state', colorData);
         }
     });
 }

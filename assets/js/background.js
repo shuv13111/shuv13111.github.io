@@ -35,6 +35,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 '40, 180, 240',                  // Medium blue
                 '0, 210, 255'                    // Sky blue
             ]
+        },
+        projects: {
+            start: { r: 20, g: 35, b: 70 },     // Medium blue-purple
+            mid: { r: 25, g: 45, b: 80 },       // Lighter blue-purple
+            end: { r: 15, g: 25, b: 55 },       // Darker blue-purple
+            waveColors: [
+                '100, 180, 255',                // Periwinkle
+                '120, 130, 255',                // Lavender
+                '90, 150, 255'                  // Light indigo
+            ]
+        },
+        experience: {
+            start: { r: 25, g: 20, b: 50 },     // Deep purple
+            mid: { r: 35, g: 25, b: 65 },       // Medium purple
+            end: { r: 20, g: 15, b: 40 },       // Dark purple
+            waveColors: [
+                '180, 100, 255',                // Light purple
+                '140, 80, 255',                 // Medium purple
+                '120, 40, 240'                  // Deep purple
+            ]
         }
     };
 
@@ -66,11 +86,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Function to update colors based on scroll progress
-    function updateColors(scrollProgress) {
-        // Interpolate between hero and about color schemes
-        currentColors.start = lerpColor(colorSchemes.hero.start, colorSchemes.about.start, scrollProgress);
-        currentColors.mid = lerpColor(colorSchemes.hero.mid, colorSchemes.about.mid, scrollProgress);
-        currentColors.end = lerpColor(colorSchemes.hero.end, colorSchemes.about.end, scrollProgress);
+    function updateColors() {
+        // Get scroll progress values for different sections
+        const aboutProgress = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--scroll-progress') || 0);
+        const projectsProgress = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--projects-progress') || 0);
+        const experienceProgress = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--experience-progress') || 0);
+        
+        // Determine which section transition to apply based on scroll position
+        if (experienceProgress > 0) {
+            // Transition from Projects to Experience
+            currentColors.start = lerpColor(colorSchemes.projects.start, colorSchemes.experience.start, experienceProgress);
+            currentColors.mid = lerpColor(colorSchemes.projects.mid, colorSchemes.experience.mid, experienceProgress);
+            currentColors.end = lerpColor(colorSchemes.projects.end, colorSchemes.experience.end, experienceProgress);
+            
+            // Also update wave colors
+            for (let i = 0; i < 3; i++) {
+                waves[i].color = projectsProgress > 0.5 ? colorSchemes.experience.waveColors[i] : colorSchemes.projects.waveColors[i];
+            }
+        } 
+        else if (projectsProgress > 0) {
+            // Transition from About to Projects
+            currentColors.start = lerpColor(colorSchemes.about.start, colorSchemes.projects.start, projectsProgress);
+            currentColors.mid = lerpColor(colorSchemes.about.mid, colorSchemes.projects.mid, projectsProgress);
+            currentColors.end = lerpColor(colorSchemes.about.end, colorSchemes.projects.end, projectsProgress);
+            
+            // Also update wave colors
+            for (let i = 0; i < 3; i++) {
+                waves[i].color = projectsProgress > 0.5 ? colorSchemes.projects.waveColors[i] : colorSchemes.about.waveColors[i];
+            }
+        } 
+        else if (aboutProgress > 0) {
+            // Transition from Hero to About
+            currentColors.start = lerpColor(colorSchemes.hero.start, colorSchemes.about.start, aboutProgress);
+            currentColors.mid = lerpColor(colorSchemes.hero.mid, colorSchemes.about.mid, aboutProgress);
+            currentColors.end = lerpColor(colorSchemes.hero.end, colorSchemes.about.end, aboutProgress);
+            
+            // Also update wave colors
+            for (let i = 0; i < 3; i++) {
+                waves[i].color = aboutProgress > 0.5 ? colorSchemes.about.waveColors[i] : colorSchemes.hero.waveColors[i];
+            }
+        } 
+        else {
+            // Default to Hero colors
+            currentColors.start = { ...colorSchemes.hero.start };
+            currentColors.mid = { ...colorSchemes.hero.mid };
+            currentColors.end = { ...colorSchemes.hero.end };
+            
+            // Default wave colors
+            for (let i = 0; i < 3; i++) {
+                waves[i].color = colorSchemes.hero.waveColors[i];
+            }
+        }
     }
 
     // Draw background gradient
@@ -102,13 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.lineTo(0, canvas.height);
         ctx.closePath();
         
-        // Get wave color based on current interpolation
-        const scrollProgress = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--scroll-progress') || 0);
-        const color1 = colorSchemes.hero.waveColors[index];
-        const color2 = colorSchemes.about.waveColors[index];
-        
-        // For simplicity, just switch colors based on scroll threshold
-        const waveColor = scrollProgress > 0.5 ? color2 : color1;
+        // Use the wave's assigned color or default to the current section's color
+        const waveColor = wave.color || colorSchemes.hero.waveColors[index];
         
         ctx.fillStyle = `rgba(${waveColor}, ${wave.opacity})`;
         ctx.fill();
@@ -137,11 +198,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Get current scroll progress
-        const scrollProgress = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--scroll-progress') || 0);
-        
         // Update colors based on scroll
-        updateColors(scrollProgress);
+        updateColors();
         
         // Draw background
         drawBackground();
@@ -160,8 +218,10 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(animate);
     }
 
-    // Set CSS variable for initial state
+    // Set CSS variables for initial state
     document.documentElement.style.setProperty('--scroll-progress', '0');
+    document.documentElement.style.setProperty('--projects-progress', '0');
+    document.documentElement.style.setProperty('--experience-progress', '0');
 
     // Start animation
     animate();
