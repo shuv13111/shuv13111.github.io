@@ -122,14 +122,6 @@ function initScrollAnimations() {
             document.documentElement.style.setProperty('--scroll-progress', progress);
         }
     });
-
-    // About to Projects transition
-    const colorSchemes = [
-        { r: 10, g: 25, b: 47 },   // Hero (dark blue)
-        { r: 15, g: 30, b: 60 },   // About (slightly brighter blue)
-        { r: 20, g: 35, b: 70 },   // Projects (medium blue-purple)
-        { r: 25, g: 20, b: 50 }    // Experience (deep purple)
-    ];
     
     // Projects section background transition
     gsap.to('#bg-animation', {
@@ -142,14 +134,6 @@ function initScrollAnimations() {
         onUpdate: function() {
             const progress = this.progress();
             document.documentElement.style.setProperty('--projects-progress', progress);
-            
-            // Set a custom property for the background.js to use
-            const colorData = JSON.stringify({
-                section: 'projects',
-                progress: progress,
-                colors: colorSchemes
-            });
-            document.documentElement.setAttribute('data-scroll-state', colorData);
         }
     });
     
@@ -164,14 +148,6 @@ function initScrollAnimations() {
         onUpdate: function() {
             const progress = this.progress();
             document.documentElement.style.setProperty('--experience-progress', progress);
-            
-            // Set a custom property for the background.js to use
-            const colorData = JSON.stringify({
-                section: 'experience',
-                progress: progress,
-                colors: colorSchemes
-            });
-            document.documentElement.setAttribute('data-scroll-state', colorData);
         }
     });
 }
