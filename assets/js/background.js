@@ -12,17 +12,61 @@ document.addEventListener('DOMContentLoaded', () => {
         radius: 100 // Interaction radius for particles
     };
 
-    // Declare particle-related variables before they are used by functions
+    // Declare particle-related variables and the class itself before they are used
     let interactiveParticles = [];
-    const interactiveParticleCount = 40; 
+    const interactiveParticleCount = 40;
 
-    // This function now safely uses the pre-declared interactiveParticles array
+    // Define the InteractiveParticle class BEFORE it is used by initInteractiveParticles
+    class InteractiveParticle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.baseX = this.x;
+            this.baseY = this.y;
+            this.size = Math.random() * 2 + 1.5; 
+            this.density = (Math.random() * 15) + 10; 
+            this.color = '255, 255, 255'; 
+            this.opacity = Math.random() * 0.4 + 0.1;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+            ctx.fill();
+        }
+
+        update() {
+            // Return to base position
+            this.x += (this.baseX - this.x) * 0.02; 
+            this.y += (this.baseY - this.y) * 0.02;
+
+            // Mouse interaction
+            if (mouse.x !== undefined && mouse.y !== undefined) {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < mouse.radius) {
+                    const forceDirectionX = dx / distance;
+                    const forceDirectionY = dy / distance;
+                    const force = (mouse.radius - distance) / mouse.radius; 
+                    const moveX = forceDirectionX * force * this.density * -0.8;
+                    const moveY = forceDirectionY * force * this.density * -0.8;
+                    this.x += moveX;
+                    this.y += moveY;
+                }
+            }
+        }
+    }
+
+    // This function now safely uses the pre-declared interactiveParticles array and defined class
     function initInteractiveParticles() {
         interactiveParticles = []; // Clear existing particles
         for (let i = 0; i < interactiveParticleCount; i++) {
             const x = Math.random() * canvas.width;
             const y = Math.random() * canvas.height;
-            interactiveParticles.push(new InteractiveParticle(x, y));
+            interactiveParticles.push(new InteractiveParticle(x, y)); // Now InteractiveParticle class is defined
         }
     }
 
@@ -197,47 +241,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.arc(x, y, size, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, opacity)})`;
             ctx.fill();
-        }
-    }
-
-    class InteractiveParticle {
-        constructor(x, y) {
-            this.x = x;
-            this.y = y;
-            this.baseX = this.x;
-            this.baseY = this.y;
-            this.size = Math.random() * 2 + 1.5; 
-            this.density = (Math.random() * 15) + 10; 
-            this.color = '255, 255, 255'; 
-            this.opacity = Math.random() * 0.4 + 0.1;
-        }
-
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
-            ctx.fill();
-        }
-
-        update() {
-            this.x += (this.baseX - this.x) * 0.02; // Slower return
-            this.y += (this.baseY - this.y) * 0.02;
-
-            if (mouse.x !== undefined && mouse.y !== undefined) {
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < mouse.radius) {
-                    const forceDirectionX = dx / distance;
-                    const forceDirectionY = dy / distance;
-                    const force = (mouse.radius - distance) / mouse.radius; 
-                    const moveX = forceDirectionX * force * this.density * -0.8; // Stronger repel
-                    const moveY = forceDirectionY * force * this.density * -0.8;
-                    this.x += moveX;
-                    this.y += moveY;
-                }
-            }
         }
     }
     // Note: initInteractiveParticles is now called by setCanvasSize initially.
