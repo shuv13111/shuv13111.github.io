@@ -89,9 +89,9 @@ function initScrollAnimations() {
         scrollTrigger: {
             trigger: '#experience',
             start: 'top 80%',
-            end: 'top 20%',
+            end: 'bottom center',
             scrub: true,
-            markers: false,
+            markers: true,
         }
     });
 
@@ -99,11 +99,13 @@ function initScrollAnimations() {
         .from('#experience h2', { 
             y: 50, 
             opacity: 0,
+            autoAlpha: 0,
             ease: 'power2.out' 
         }, 0)
-        .from('.timeline-item', {
+        .from('#experience .timeline-item', {
             x: -50,
             opacity: 0,
+            autoAlpha: 0,
             stagger: 0.2,
             ease: 'power2.out'
         }, 0.2);
