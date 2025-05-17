@@ -617,18 +617,21 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 70px;
 }
 
 .tech-logo img {
     height: 48px;
-    width: auto;
-    filter: grayscale(20%) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    max-width: 90px;
+    object-fit: contain;
+    filter: grayscale(20%) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)) brightness(1.1);
     opacity: 0.9;
     transition: all 0.3s ease;
+    background: transparent;
 }
 
 .tech-logo:hover img {
-    filter: grayscale(0%) drop-shadow(0 3px 6px rgba(0, 255, 255, 0.3));
+    filter: grayscale(0%) drop-shadow(0 3px 6px rgba(0, 255, 255, 0.3)) brightness(1.2);
     opacity: 1;
     transform: scale(1.2);
 }
