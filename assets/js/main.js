@@ -5,6 +5,8 @@
 */
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("main.js loaded"); // Log to confirm script is running
+    
     // Get all sections that have an ID defined
     const sections = document.querySelectorAll("section[id]");
     
@@ -29,6 +31,24 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add scroll reveal animation to elements
     const revealElements = () => {
+        console.log("Checking for elements to reveal"); // Debug log
+        
+        // Specifically target the experience section
+        const experienceSection = document.getElementById('experience');
+        if (experienceSection) {
+            console.log("Found experience section");
+            experienceSection.classList.add('revealed');
+            
+            // Force all items in experience section to be visible
+            const timelineItems = experienceSection.querySelectorAll('.timeline-item');
+            timelineItems.forEach(item => {
+                item.classList.add('revealed');
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+                item.style.visibility = 'visible';
+            });
+        }
+        
         const elements = document.querySelectorAll('.project-card, .timeline-item, .section-container');
         const windowHeight = window.innerHeight;
         
@@ -37,23 +57,45 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (elementPosition < windowHeight - 50) {
                 element.classList.add('revealed');
+                // Add specific styles for timeline items
+                if (element.classList.contains('timeline-item')) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                    element.style.visibility = 'visible';
+                }
             }
         });
     };
     
-    // Initial check for elements in view
+    // Call immediately to reveal elements that are already in view
     revealElements();
+    
+    // Then call again after a short delay to ensure elements are revealed
+    setTimeout(revealElements, 500);
     
     // Check again on scroll
     window.addEventListener('scroll', revealElements);
     
-    // Add CSS for animations
+    // Add CSS for animations with important flags for timeline items
     const style = document.createElement('style');
     style.textContent = `
-        .project-card, .timeline-item, .section-container {
+        .project-card, .section-container {
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        /* Special styles for timeline items */
+        .timeline-item {
+            opacity: 0 !important;
+            transform: translateY(20px) !important;
+            transition: opacity 0.8s ease, transform 0.8s ease !important;
+        }
+        
+        .timeline-item.revealed {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            visibility: visible !important;
         }
         
         .revealed {
