@@ -12,12 +12,27 @@ document.addEventListener('DOMContentLoaded', () => {
         radius: 100 // Interaction radius for particles
     };
 
+    // Declare particle-related variables before they are used by functions
+    let interactiveParticles = [];
+    const interactiveParticleCount = 40; 
+
+    // This function now safely uses the pre-declared interactiveParticles array
+    function initInteractiveParticles() {
+        interactiveParticles = []; // Clear existing particles
+        for (let i = 0; i < interactiveParticleCount; i++) {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+            interactiveParticles.push(new InteractiveParticle(x, y));
+        }
+    }
+
     function setCanvasSize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        initInteractiveParticles(); // Re-initialize particles on resize
+        initInteractiveParticles(); // Initialize/re-initialize particles on resize
     }
-    setCanvasSize();
+    // Call setCanvasSize once at the start to set initial size and particles
+    setCanvasSize(); 
     window.addEventListener('resize', setCanvasSize);
 
     window.addEventListener('mousemove', (event) => {
@@ -225,18 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-
-    let interactiveParticles = [];
-    const interactiveParticleCount = 40; 
-
-    function initInteractiveParticles() {
-        interactiveParticles = [];
-        for (let i = 0; i < interactiveParticleCount; i++) {
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
-            interactiveParticles.push(new InteractiveParticle(x, y));
-        }
-    }
+    // Note: initInteractiveParticles is now called by setCanvasSize initially.
 
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -256,9 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.style.setProperty('--projects-progress', '0');
     document.documentElement.style.setProperty('--experience-progress', '0');
 
-    initInteractiveParticles(); // Initial particle setup
+    // Call animate to start the animation loop after all setup.
     animate();
-    
-    // No longer need to pass setCanvasSize directly, it calls initInteractiveParticles
-    // window.addEventListener('resize', setCanvasSize);
 });
