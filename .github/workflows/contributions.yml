@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -24,8 +26,6 @@ jobs:
 
       - name: Fetch contributions
         run: node index.js
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Commit and push if changed
         run: |
