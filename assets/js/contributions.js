@@ -9,21 +9,34 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             const container = document.getElementById("contributions-container");
             const totalContributionsEl = document.getElementById("total-contributions");
+            const monthContributionsEl = document.getElementById("month-contributions");
+            const quarterContributionsEl = document.getElementById("quarter-contributions");
+            const longestStreakEl = document.getElementById("longest-streak");
+            const currentStreakEl = document.getElementById("current-streak");
 
             if (!container || !totalContributionsEl || !data) {
                 console.error("Could not find necessary elements or data for contributions graph.");
                 return;
             }
 
-            totalContributionsEl.textContent = `${data.totalContributions} contributions in the last year`;
+            // Populate stats
+            totalContributionsEl.textContent = data.totalContributions;
+            monthContributionsEl.textContent = data.lastMonthContributions;
+            quarterContributionsEl.textContent = data.lastQuarterContributions;
+            longestStreakEl.textContent = `${data.longestStreak} days`;
+            currentStreakEl.textContent = `${data.currentStreak} days`;
 
             // Clear any existing content
             container.innerHTML = '';
 
-            data.weeks.forEach(week => {
+            data.calendar.weeks.forEach(week => {
                 week.contributionDays.forEach(day => {
                     const dayDiv = document.createElement("div");
                     dayDiv.classList.add("contribution-day");
+
+                    if (day.isFirstDayOfMonth) {
+                        dayDiv.classList.add("month-separator");
+                    }
                     dayDiv.style.backgroundColor = getContributionColor(day.contributionCount);
                     
                     const tooltip = document.createElement("span");
