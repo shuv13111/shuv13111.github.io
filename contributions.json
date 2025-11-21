@@ -3,7 +3,7 @@
   "lastMonthContributions": 7,
   "lastQuarterContributions": 7,
   "longestStreak": 2,
-  "currentStreak": 0,
+  "currentStreak": 1,
   "calendar": {
     "totalContributions": 38,
     "weeks": [
@@ -2073,6 +2073,11 @@
             "contributionCount": 0,
             "date": "2025-11-20",
             "weekday": 4
+          },
+          {
+            "contributionCount": 0,
+            "date": "2025-11-21",
+            "weekday": 5
           }
         ]
       }
