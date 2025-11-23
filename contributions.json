@@ -11,45 +11,6 @@
         "contributionDays": [
           {
             "contributionCount": 0,
-            "date": "2024-11-17",
-            "weekday": 0
-          },
-          {
-            "contributionCount": 0,
-            "date": "2024-11-18",
-            "weekday": 1
-          },
-          {
-            "contributionCount": 0,
-            "date": "2024-11-19",
-            "weekday": 2
-          },
-          {
-            "contributionCount": 0,
-            "date": "2024-11-20",
-            "weekday": 3
-          },
-          {
-            "contributionCount": 0,
-            "date": "2024-11-21",
-            "weekday": 4
-          },
-          {
-            "contributionCount": 0,
-            "date": "2024-11-22",
-            "weekday": 5
-          },
-          {
-            "contributionCount": 0,
-            "date": "2024-11-23",
-            "weekday": 6
-          }
-        ]
-      },
-      {
-        "contributionDays": [
-          {
-            "contributionCount": 0,
             "date": "2024-11-24",
             "weekday": 0
           },
@@ -2083,6 +2044,15 @@
             "contributionCount": 0,
             "date": "2025-11-22",
             "weekday": 6
+          }
+        ]
+      },
+      {
+        "contributionDays": [
+          {
+            "contributionCount": 0,
+            "date": "2025-11-23",
+            "weekday": 0
           }
         ]
       }
