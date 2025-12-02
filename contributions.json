@@ -2058,6 +2058,11 @@
             "date": "2025-12-01",
             "weekday": 1,
             "isFirstDayOfMonth": true
+          },
+          {
+            "contributionCount": 0,
+            "date": "2025-12-02",
+            "weekday": 2
           }
         ]
       }
