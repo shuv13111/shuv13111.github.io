@@ -1,4 +1,17 @@
 {
+  "name": "shuv13111-github-io",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "fetch": "node index.js"
+  },
+  "dependencies": {
+    "@octokit/graphql": "^7.0.1"
+  }
+}
+{
   "name": "github-contribution-fetcher",
   "version": "1.0.0",
   "description": "Fetches GitHub contribution data.",

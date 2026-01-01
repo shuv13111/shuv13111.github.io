@@ -1,7 +1,16 @@
 const { graphql } = require("@octokit/graphql");
 const fs = require("fs");
 
-const USERNAME = "shuv13111"; // <-- IMPORTANT: Replace with your GitHub username
+// Prefer env overrides for flexibility; fall back to default username.
+const USERNAME = process.env.GH_USERNAME || "shuv13111";
+const TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+
+if (!TOKEN) {
+  console.error(
+    "Missing GH_TOKEN/GITHUB_TOKEN. Please set it in repo secrets before running."
+  );
+  process.exit(1);
+}
 
 async function fetchContributions() {
   const { user } = await graphql(
@@ -26,7 +35,7 @@ async function fetchContributions() {
     {
       username: USERNAME,
       headers: {
-        authorization: `bearer ${process.env.GH_TOKEN}`,
+        authorization: `bearer ${TOKEN}`,
       },
     }
   );
@@ -126,4 +135,10 @@ async function fetchContributions() {
   console.log("Successfully fetched and processed contribution data.");
 }
 
-fetchContributions();
+fetchContributions().catch((err) => {
+  console.error("Failed to fetch contributions:", err.message);
+  if (err.response && err.response.data) {
+    console.error("GitHub response:", JSON.stringify(err.response.data, null, 2));
+  }
+  process.exit(1);
+});
