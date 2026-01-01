@@ -11,12 +11,3 @@
     "@octokit/graphql": "^7.0.1"
   }
 }
-{
-  "name": "github-contribution-fetcher",
-  "version": "1.0.0",
-  "description": "Fetches GitHub contribution data.",
-  "main": "index.js",
-  "dependencies": {
-    "@octokit/graphql": "^4.6.4"
-  }
-}
