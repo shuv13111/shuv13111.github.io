@@ -1,4 +1,5 @@
-const { graphql } = require("@octokit/graphql");
+const { graphql: graphqlBase } = require("@octokit/graphql");
+const fetch = require("node-fetch");
 const fs = require("fs");
 
 // Prefer env overrides for flexibility; fall back to default username.
@@ -11,6 +12,16 @@ if (!TOKEN) {
   );
   process.exit(1);
 }
+
+// Create graphql client with node-fetch for Node 16 compatibility
+const graphql = graphqlBase.defaults({
+  headers: {
+    authorization: `bearer ${TOKEN}`,
+  },
+  request: {
+    fetch: fetch,
+  },
+});
 
 async function fetchContributions() {
   const { user } = await graphql(
@@ -34,9 +45,6 @@ async function fetchContributions() {
     `,
     {
       username: USERNAME,
-      headers: {
-        authorization: `bearer ${TOKEN}`,
-      },
     }
   );
 
