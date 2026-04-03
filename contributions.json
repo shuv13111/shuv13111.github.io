@@ -2069,6 +2069,11 @@
             "date": "2026-04-01",
             "weekday": 3,
             "isFirstDayOfMonth": true
+          },
+          {
+            "contributionCount": 0,
+            "date": "2026-04-02",
+            "weekday": 4
           }
         ]
       }
