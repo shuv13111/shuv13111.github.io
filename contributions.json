@@ -1,51 +1,12 @@
 {
-  "totalContributions": 23,
+  "totalContributions": 20,
   "lastMonthContributions": 2,
   "lastQuarterContributions": 2,
   "longestStreak": 2,
   "currentStreak": 1,
   "calendar": {
-    "totalContributions": 23,
+    "totalContributions": 20,
     "weeks": [
-      {
-        "contributionDays": [
-          {
-            "contributionCount": 0,
-            "date": "2025-05-18",
-            "weekday": 0
-          },
-          {
-            "contributionCount": 0,
-            "date": "2025-05-19",
-            "weekday": 1
-          },
-          {
-            "contributionCount": 3,
-            "date": "2025-05-20",
-            "weekday": 2
-          },
-          {
-            "contributionCount": 0,
-            "date": "2025-05-21",
-            "weekday": 3
-          },
-          {
-            "contributionCount": 0,
-            "date": "2025-05-22",
-            "weekday": 4
-          },
-          {
-            "contributionCount": 0,
-            "date": "2025-05-23",
-            "weekday": 5
-          },
-          {
-            "contributionCount": 0,
-            "date": "2025-05-24",
-            "weekday": 6
-          }
-        ]
-      },
       {
         "contributionDays": [
           {
@@ -2083,6 +2044,20 @@
             "contributionCount": 0,
             "date": "2026-05-23",
             "weekday": 6
+          }
+        ]
+      },
+      {
+        "contributionDays": [
+          {
+            "contributionCount": 0,
+            "date": "2026-05-24",
+            "weekday": 0
+          },
+          {
+            "contributionCount": 0,
+            "date": "2026-05-25",
+            "weekday": 1
           }
         ]
       }
