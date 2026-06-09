@@ -1,11 +1,11 @@
 {
-  "totalContributions": 20,
-  "lastMonthContributions": 2,
-  "lastQuarterContributions": 2,
+  "totalContributions": 25,
+  "lastMonthContributions": 7,
+  "lastQuarterContributions": 7,
   "longestStreak": 2,
   "currentStreak": 1,
   "calendar": {
-    "totalContributions": 20,
+    "totalContributions": 25,
     "weeks": [
       {
         "contributionDays": [
@@ -2055,7 +2055,7 @@
             "weekday": 0
           },
           {
-            "contributionCount": 0,
+            "contributionCount": 5,
             "date": "2026-06-08",
             "weekday": 1
           }
