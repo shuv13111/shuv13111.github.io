@@ -84,4 +84,52 @@
       else window.location.href = href;
     });
   });
+
+  /* ---------- Learn module selector ---------- */
+  var learnModal = document.getElementById('learn-modal');
+  var lastLearnTrigger = null;
+
+  function openLearnModal(trigger) {
+    if (!learnModal) return;
+    lastLearnTrigger = trigger;
+    learnModal.classList.add('is-open');
+    learnModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    var firstOption = learnModal.querySelector('.learn-option');
+    if (firstOption) firstOption.focus();
+  }
+
+  function closeLearnModal() {
+    if (!learnModal) return;
+    learnModal.classList.remove('is-open');
+    learnModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+
+    if (lastLearnTrigger) lastLearnTrigger.focus();
+  }
+
+  document.querySelectorAll('[data-open-learn]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      openLearnModal(button);
+    });
+  });
+
+  document.querySelectorAll('[data-close-learn]').forEach(function (button) {
+    button.addEventListener('click', closeLearnModal);
+  });
+
+  document.querySelectorAll('[data-learn-href]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var href = button.getAttribute('data-learn-href');
+      if (href) window.open(href, '_blank', 'noopener,noreferrer');
+      closeLearnModal();
+    });
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && learnModal && learnModal.classList.contains('is-open')) {
+      closeLearnModal();
+    }
+  });
 })();

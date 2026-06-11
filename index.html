@@ -16,6 +16,7 @@
   <a class="wordmark" href="index.html">SHUV</a>
   <div class="nav-links">
     <a href="#work">Work</a>
+    <a href="#learn">Learn</a>
     <a href="#capabilities">Capabilities</a>
     <a href="#experience">Experience</a>
     <a href="#contact">Contact</a>
@@ -176,9 +177,32 @@
   </div>
 </section>
 
+<section class="section" id="learn" data-screen-label="Learn" style="padding-top: 16px;">
+  <div class="section-bar io-reveal">
+    <h2>03 / Learn</h2>
+    <span class="tick">●</span>
+  </div>
+
+  <div class="learn-panel io-reveal" data-delay="120">
+    <div class="learn-copy">
+      <span class="kicker">INTERACTIVE LEARNING</span>
+      <h3>Explore AI systems by moving through them.</h3>
+      <p>Short, visual modules for complex AI concepts. Pick a topic, preview the learning path, then launch the interactive page.</p>
+    </div>
+    <button class="learn-tile" type="button" data-open-learn="transformers">
+      <span class="idx">01</span>
+      <span>
+        <strong>Transformers</strong>
+        <small>Attention, tokens, embeddings, and layer flow.</small>
+      </span>
+      <span class="go">SELECT ↗</span>
+    </button>
+  </div>
+</section>
+
 <section class="section" id="experience" data-screen-label="Experience" style="padding-top: 16px;">
   <div class="section-bar io-reveal">
-    <h2>03 / Experience</h2>
+    <h2>04 / Experience</h2>
     <span class="tick">●</span>
   </div>
 
@@ -251,6 +275,25 @@
     <span>BUILT WITH INTENT</span>
   </div>
 </footer>
+
+<div class="learn-modal" id="learn-modal" aria-hidden="true">
+  <div class="learn-modal__backdrop" data-close-learn></div>
+  <div class="learn-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="learn-modal-title">
+    <button class="learn-modal__close" type="button" aria-label="Close learning selector" data-close-learn>×</button>
+    <span class="kicker">CHOOSE A MODULE</span>
+    <h3 id="learn-modal-title">Transformers</h3>
+    <p>Open the interactive guide when you want to step through the architecture visually.</p>
+
+    <button class="learn-option" type="button" data-learn-href="https://shuv13111.github.io/transformers-interactive/">
+      <span class="idx">01</span>
+      <span>
+        <strong>Transformer Architecture Interactive</strong>
+        <small>Visual flow from token input through attention and feed-forward layers.</small>
+      </span>
+      <span class="go">OPEN ↗</span>
+    </button>
+  </div>
+</div>
 
 <script src="site.js"></script>
 </body>
