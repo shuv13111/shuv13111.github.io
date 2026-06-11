@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graph RAG Supply-Chain Chatbot — Case Study</title>
+<meta name="description" content="How an 18M-node Neo4j graph RAG platform cut supply-chain query turnaround from 6 hours to 38 seconds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="wordmark" href="index.html">Shuv M<em>.</em></a>
+  <div class="nav-links">
+    <a href="index.html#work">Work</a>
+    <a href="index.html#capabilities">Capabilities</a>
+    <a href="index.html#experience">Experience</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<header class="cs-hero" data-screen-label="Case Study Hero">
+  <div class="crumb">
+    <a href="index.html">← BACK</a>
+    <span>/</span>
+    <span>CASE STUDY 01</span>
+  </div>
+  <h1>
+    <span class="reveal-line"><span>6 hours</span></span>
+    <span class="reveal-line"><span class="accent">→ 38 seconds.</span></span>
+  </h1>
+  <div class="cs-facts">
+    <div class="cs-fact">
+      <div class="k">Role</div>
+      <div class="v">AI/ML Eng Lead (IC)</div>
+    </div>
+    <div class="cs-fact">
+      <div class="k">Org</div>
+      <div class="v">Ashley Furniture</div>
+    </div>
+    <div class="cs-fact">
+      <div class="k">Stack</div>
+      <div class="v">Neo4j · LangGraph · Gemini</div>
+    </div>
+    <div class="cs-fact">
+      <div class="k">Status</div>
+      <div class="v">In production</div>
+    </div>
+  </div>
+</header>
+
+<section class="section" data-screen-label="Case Study Body">
+  <div class="cs-body">
+    <div class="cs-block io-reveal">
+      <h3>The Problem</h3>
+      <div>
+        <p>Supply-chain analysts fielded roughly 100 ad-hoc questions a week — "which SKUs are exposed if this supplier slips?", "what's the alternate routing for this lane?" Each answer meant manually joining data across systems: an average of 6 hours per question, often longer.</p>
+        <p>The knowledge existed. It was just scattered across millions of entities and relationships no single query could reach.</p>
+      </div>
+    </div>
+
+    <div class="cs-block io-reveal">
+      <h3>The Approach</h3>
+      <div>
+        <p>Model the supply chain as a knowledge graph, then let an agent traverse it. I designed a Neo4j graph of 18M nodes and 54M edges — suppliers, SKUs, lanes, facilities, purchase orders — and built a LangGraph agent on Gemini that translates natural-language questions into graph traversals, validates intermediate results, and composes a sourced answer.</p>
+        <ul>
+          <li>Agentic query planning: the agent decomposes questions into Cypher traversals and self-checks results</li>
+          <li>Retrieval grounded in the graph — every claim in an answer traces to specific nodes</li>
+          <li>Latency budget enforced per step; 38s average end-to-end</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cs-block io-reveal">
+      <h3>Architecture</h3>
+      <div>
+        <div class="placeholder" style="height: 320px;">architecture diagram — drop in a real one<br>(question → LangGraph agent → Cypher planning → Neo4j 18M/54M → grounded answer)</div>
+      </div>
+    </div>
+
+    <div class="cs-block io-reveal">
+      <h3>Guardrails</h3>
+      <div>
+        <p>Production AI needs the unglamorous parts done right. Every response passes bias scans and prompt-toxicity filters before reaching a user; the pipeline has held 100% policy compliance since launch. The same RAG foundation was extended to automate compliance review — cutting a 4-hour manual process to 10 minutes.</p>
+      </div>
+    </div>
+
+    <div class="cs-block io-reveal">
+      <h3>Results</h3>
+      <div>
+        <div class="cs-results">
+          <div class="cs-result">
+            <div class="v">99.8%</div>
+            <div class="l">faster query turnaround (6h → 38s)</div>
+          </div>
+          <div class="cs-result">
+            <div class="v">~100/wk</div>
+            <div class="l">supply-chain questions answered in production</div>
+          </div>
+          <div class="cs-result">
+            <div class="v">100%</div>
+            <div class="l">responsible-AI policy compliance since launch</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cs-next">
+  <span class="label">NEXT</span>
+  <a class="btn btn--ghost" href="index.html#work">Back to all work →</a>
+</div>
+
+<footer class="site-footer" id="contact">
+  <div class="footer-top">
+    <h2 class="io-reveal">Say<br><a href="mailto:shuvrangshumukhoapdhyay@gmail.com">hello.</a></h2>
+    <div class="footer-card io-reveal" data-delay="120">
+      <img src="images/Face.jpg" alt="Shuvrangshu Mukhopadhyay">
+      <div class="links">
+        <div><a class="primary" href="mailto:shuvrangshumukhoapdhyay@gmail.com">shuvrangshumukhoapdhyay@gmail.com</a></div>
+        <div><a href="https://www.linkedin.com/in/shuv93/" target="_blank" rel="noopener">linkedin.com/in/shuv93</a></div>
+        <div><a href="https://github.com/shuv13111" target="_blank" rel="noopener">github.com/shuv13111</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Shuvrangshu Mukhopadhyay</span>
+    <span>BUILT WITH INTENT</span>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+</body>
+</html>
