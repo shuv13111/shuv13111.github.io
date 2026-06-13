@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Graph RAG Supply-Chain Chatbot — Case Study</title>
-<meta name="description" content="How an 18M-node Neo4j graph RAG platform cut supply-chain query turnaround from 6 hours to 38 seconds.">
+<meta name="description" content="How a 220M-node, 80M-edge Neo4j graph RAG platform cut supply-chain query turnaround from 6 hours to 38 seconds.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@
     </div>
     <div class="cs-fact">
       <div class="k">Stack</div>
-      <div class="v">Neo4j · LangGraph · Gemini</div>
+      <div class="v">React · FastAPI · LangGraph · Gemini · Claude · Neo4j MCP</div>
     </div>
     <div class="cs-fact">
       <div class="k">Status</div>
@@ -65,9 +65,10 @@
     <div class="cs-block io-reveal">
       <h3>The Approach</h3>
       <div>
-        <p>Model the supply chain as a knowledge graph, then let an agent traverse it. I designed a Neo4j graph of 18M nodes and 54M edges — suppliers, SKUs, lanes, facilities, purchase orders — and built a LangGraph agent on Gemini that translates natural-language questions into graph traversals, validates intermediate results, and composes a sourced answer.</p>
+        <p>Model the supply chain as a knowledge graph, then let an agent traverse it. I designed a Neo4j graph of 220M nodes and 80M edges — suppliers, SKUs, lanes, facilities, purchase orders — and built a React and FastAPI application around a LangGraph agent that uses Gemini and Claude APIs, calls Neo4j tools through MCP, validates intermediate results, and composes a sourced answer.</p>
         <ul>
           <li>Agentic query planning: the agent decomposes questions into Cypher traversals and self-checks results</li>
+          <li>Tool access through MCP: Neo4j tools expose controlled graph retrieval to the LangGraph workflow</li>
           <li>Retrieval grounded in the graph — every claim in an answer traces to specific nodes</li>
           <li>Latency budget enforced per step; 38s average end-to-end</li>
         </ul>
@@ -77,7 +78,68 @@
     <div class="cs-block io-reveal">
       <h3>Architecture</h3>
       <div>
-        <div class="placeholder" style="height: 320px;">architecture diagram — drop in a real one<br>(question → LangGraph agent → Cypher planning → Neo4j 18M/54M → grounded answer)</div>
+        <div class="arch-shell">
+          <div class="arch-flow" aria-label="Interactive architecture diagram for the Graph RAG platform">
+            <button class="arch-node arch-node--react is-active" type="button" aria-pressed="true" data-arch-kicker="01 / Frontend" data-arch-title="React analyst console" data-arch-body="Analysts ask supply-chain questions, inspect grounded answers, and review citations without leaving the workspace." data-arch-stack="React|Answer UI|Citation trail">
+              <span>01 / Frontend</span>
+              <strong>React</strong>
+              <small>Question workspace + cited answer UI</small>
+            </button>
+
+            <button class="arch-node arch-node--api" type="button" aria-pressed="false" data-arch-kicker="02 / API Layer" data-arch-title="FastAPI service boundary" data-arch-body="FastAPI receives the question, normalizes request context, enforces latency budgets, and streams the final response back to the React UI." data-arch-stack="FastAPI|Request context|Streaming response">
+              <span>02 / API Layer</span>
+              <strong>FastAPI</strong>
+              <small>Context, routing, latency budgets</small>
+            </button>
+
+            <button class="arch-node arch-node--agent" type="button" aria-pressed="false" data-arch-kicker="03 / Agent Runtime" data-arch-title="LangGraph orchestration" data-arch-body="LangGraph manages the agent state machine: planning, tool calls, retries, validation, and synthesis before an answer reaches a user." data-arch-stack="LangGraph|Tool routing|Validation loop">
+              <span>03 / Agent Runtime</span>
+              <strong>LangGraph</strong>
+              <small>Plan, retrieve, validate, synthesize</small>
+            </button>
+
+            <button class="arch-node arch-node--model" type="button" aria-pressed="false" data-arch-kicker="04 / Reasoning" data-arch-title="Gemini + Claude APIs" data-arch-body="Gemini and Claude support question decomposition, query planning, cross-checking, and final answer synthesis depending on the task path." data-arch-stack="Gemini API|Claude API|Reasoning checks">
+              <span>04 / Reasoning</span>
+              <strong>Gemini + Claude</strong>
+              <small>Decomposition and synthesis</small>
+            </button>
+
+            <button class="arch-node arch-node--planner" type="button" aria-pressed="false" data-arch-kicker="05 / Planning" data-arch-title="Cypher planning" data-arch-body="The agent converts intent into graph traversals, keeping intermediate steps inspectable before retrieval hits the graph." data-arch-stack="Cypher|Schema hints|Query checks">
+              <span>05 / Planning</span>
+              <strong>Cypher planner</strong>
+              <small>Intent to graph traversal</small>
+            </button>
+
+            <button class="arch-node arch-node--mcp" type="button" aria-pressed="false" data-arch-kicker="06 / Tooling" data-arch-title="Neo4j tools via MCP" data-arch-body="Neo4j tools are exposed through MCP, giving the LangGraph workflow controlled, schema-aware access to graph retrieval operations." data-arch-stack="MCP|Neo4j tools|Controlled retrieval">
+              <span>06 / Tooling</span>
+              <strong>Neo4j MCP tools</strong>
+              <small>Controlled graph access</small>
+            </button>
+
+            <button class="arch-node arch-node--data" type="button" aria-pressed="false" data-arch-kicker="07 / Data Layer" data-arch-title="Neo4j knowledge graph" data-arch-body="The production graph stores 220M nodes and 80M edges across suppliers, SKUs, lanes, facilities, purchase orders, and dependency relationships." data-arch-stack="220M nodes|80M edges|Supply-chain graph">
+              <span>07 / Data Layer</span>
+              <strong>Neo4j graph</strong>
+              <small>220M nodes / 80M edges</small>
+            </button>
+
+            <button class="arch-node arch-node--answer" type="button" aria-pressed="false" data-arch-kicker="08 / Response" data-arch-title="Grounded answer" data-arch-body="The response returns with graph-grounded citations, policy checks, and answer context so the analyst can trust where the result came from." data-arch-stack="Citations|Guardrails|Answer context">
+              <span>08 / Response</span>
+              <strong>Grounded answer</strong>
+              <small>Citations, guardrails, context</small>
+            </button>
+          </div>
+
+          <aside class="arch-detail" aria-live="polite">
+            <span class="arch-detail-kicker">01 / Frontend</span>
+            <h4>React analyst console</h4>
+            <p>Analysts ask supply-chain questions, inspect grounded answers, and review citations without leaving the workspace.</p>
+            <div class="arch-detail-stack">
+              <span>React</span>
+              <span>Answer UI</span>
+              <span>Citation trail</span>
+            </div>
+          </aside>
+        </div>
       </div>
     </div>
 

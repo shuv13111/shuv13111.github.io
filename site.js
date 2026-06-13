@@ -78,10 +78,21 @@
   /* ---------- Project rows are fully clickable ---------- */
   document.querySelectorAll('.project-row[data-href]').forEach(function (row) {
     row.style.cursor = 'pointer';
-    row.addEventListener('click', function () {
+    row.setAttribute('role', 'link');
+    row.setAttribute('tabindex', '0');
+
+    function openProject() {
       var href = row.getAttribute('data-href');
       if (href.indexOf('http') === 0) window.open(href, '_blank');
       else window.location.href = href;
+    }
+
+    row.addEventListener('click', openProject);
+    row.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openProject();
+      }
     });
   });
 
@@ -132,4 +143,40 @@
       closeLearnModal();
     }
   });
+
+  /* ---------- Interactive architecture diagram ---------- */
+  var archNodes = document.querySelectorAll('.arch-node[data-arch-title]');
+  var archDetail = document.querySelector('.arch-detail');
+  if (archNodes.length && archDetail) {
+    var detailKicker = archDetail.querySelector('.arch-detail-kicker');
+    var detailTitle = archDetail.querySelector('h4');
+    var detailBody = archDetail.querySelector('p');
+    var detailStack = archDetail.querySelector('.arch-detail-stack');
+
+    function setArchDetail(node) {
+      archNodes.forEach(function (item) {
+        var active = item === node;
+        item.classList.toggle('is-active', active);
+        item.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+
+      detailKicker.textContent = node.getAttribute('data-arch-kicker') || '';
+      detailTitle.textContent = node.getAttribute('data-arch-title') || '';
+      detailBody.textContent = node.getAttribute('data-arch-body') || '';
+      detailStack.innerHTML = '';
+
+      (node.getAttribute('data-arch-stack') || '').split('|').forEach(function (item) {
+        if (!item) return;
+        var chip = document.createElement('span');
+        chip.textContent = item;
+        detailStack.appendChild(chip);
+      });
+    }
+
+    archNodes.forEach(function (node) {
+      node.addEventListener('click', function () {
+        setArchDetail(node);
+      });
+    });
+  }
 })();

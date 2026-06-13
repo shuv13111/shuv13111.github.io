@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shuvrangshu Mukhopadhyay — AI that ships.</title>
-<meta name="description" content="AI/ML Engineering Lead. Production-grade GenAI and ML systems: graph RAG, LangGraph agents, MLOps at enterprise scale.">
+<meta name="description" content="AI/ML Engineering Lead. Production-grade GenAI and ML systems: graph RAG, LangGraph agents, FastAPI, React, and MLOps at enterprise scale.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
@@ -16,6 +16,7 @@
   <a class="wordmark" href="index.html">SHUV</a>
   <div class="nav-links">
     <a href="#work">Work</a>
+    <a href="#projects">Projects</a>
     <a href="#learn">Learn</a>
     <a href="#capabilities">Capabilities</a>
     <a href="#experience">Experience</a>
@@ -33,7 +34,7 @@
     <span class="reveal-line"><span class="accent">ships.</span></span>
   </h1>
   <div class="hero-cols">
-    <p>Production-grade GenAI and ML systems with the unglamorous parts done right: guardrails, latency, compliance, scale. Nine years from underwriting risk models to an 18M-node graph RAG platform in daily use.</p>
+    <p>Production-grade GenAI and ML systems with the unglamorous parts done right: guardrails, latency, compliance, scale.</p>
     <div class="hero-aside">
       9 YRS · AIG → KHOROS → ASHLEY<br>GRAPH RAG · NLP · MLOPS
     </div>
@@ -46,9 +47,9 @@
       <div class="detail">[99.8% faster]</div>
     </div>
     <div class="metric">
-      <div class="value"><span class="count" data-target="18" data-suffix="M">0M</span></div>
+      <div class="value"><span class="count" data-target="220" data-suffix="M">0M</span></div>
       <div class="label">Neo4j nodes powering production RAG</div>
-      <div class="detail">[54M edges]</div>
+      <div class="detail">[80M edges]</div>
     </div>
     <div class="metric">
       <div class="value">4h → 10m</div>
@@ -94,13 +95,16 @@
         <span class="chip">LlamaIndex</span>
         <span class="chip">RAG architecture</span>
         <span class="chip">Neo4j / knowledge graphs</span>
-        <span class="chip">Gemini &amp; OpenAI APIs</span>
+        <span class="chip">Gemini &amp; Claude APIs</span>
+        <span class="chip">Neo4j MCP tools</span>
         <span class="chip">Responsible AI guardrails</span>
       </div>
     </div>
     <div class="skill-col">
-      <h3><span class="num">02</span> MLOps &amp; Cloud</h3>
+      <h3><span class="num">02</span> Engineering &amp; MLOps</h3>
       <div class="chip-row">
+        <span class="chip">React</span>
+        <span class="chip">FastAPI</span>
         <span class="chip">AWS</span>
         <span class="chip">Azure</span>
         <span class="chip">Docker</span>
@@ -136,20 +140,33 @@
     <div>
       <span class="kicker">FLAGSHIP — IN PRODUCTION</span>
       <h3>Graph RAG Supply-Chain Chatbot</h3>
-      <p>Production chatbot over an 18M-node, 54M-edge Neo4j knowledge graph, orchestrated with LangGraph and Gemini. Cut average query turnaround from 6 hours to 38 seconds for ~100 weekly supply-chain questions — with bias scans and toxicity filters holding 100% policy compliance.</p>
+      <p>Production chatbot over a 220M-node, 80M-edge Neo4j knowledge graph, orchestrated with LangGraph, Gemini, Claude, FastAPI, React, and Neo4j tools via MCP. Cut average query turnaround from 6 hours to 38 seconds for ~100 weekly supply-chain questions — with bias scans and toxicity filters holding 100% policy compliance.</p>
       <div class="cta-row">
         <a class="btn" href="case-study-graph-rag.html">Read the case study</a>
       </div>
     </div>
     <div class="readout">
-      <div>NODES <b>18,212,409</b></div>
-      <div>EDGES <b>54,038,112</b></div>
+      <div>NODES <b>220M</b></div>
+      <div>EDGES <b>80M</b></div>
       <div>LATENCY <span class="hot">38s avg</span> (was 6h)</div>
       <div>GUARDRAILS <b>PASS · 100%</b></div>
     </div>
   </div>
+</section>
 
-  <div class="project-index io-reveal" data-delay="200">
+<section class="section" id="projects" data-screen-label="Projects" style="padding-top: 16px;">
+  <div class="section-bar io-reveal">
+    <h2>03 / Projects</h2>
+    <span class="tick">●</span>
+  </div>
+
+  <div class="project-index io-reveal" data-delay="100">
+    <div class="project-row project-row--featured" data-href="case-study-spark-ai-stack.html">
+      <span class="idx">01</span>
+      <h4>spark-ai-stack</h4>
+      <p>Fully self-hosted AI content pipeline on NVIDIA DGX Spark: Telegram triggers n8n, local Gemma 4 writes the script, and Flask orchestrates Manim, Kokoro TTS, and FFmpeg to return a narrated video for review.</p>
+      <span class="go">CASE STUDY ↗</span>
+    </div>
     <div class="project-row" data-href="https://github.com/shuv13111/Predicting-Click-Conversion-Rate">
       <span class="idx">02</span>
       <h4>Predicting Click Conversion Rate</h4>
@@ -179,7 +196,7 @@
 
 <section class="section" id="learn" data-screen-label="Learn" style="padding-top: 16px;">
   <div class="section-bar io-reveal">
-    <h2>03 / Learn</h2>
+    <h2>04 / Learn</h2>
     <span class="tick">●</span>
   </div>
 
@@ -202,7 +219,7 @@
 
 <section class="section" id="experience" data-screen-label="Experience" style="padding-top: 16px;">
   <div class="section-bar io-reveal">
-    <h2>04 / Experience</h2>
+    <h2>05 / Experience</h2>
     <span class="tick">●</span>
   </div>
 
@@ -211,7 +228,7 @@
     <div>
       <h4>AI/ML Engineering Lead (IC) <small>— Ashley Furniture Industries · Tampa, FL</small></h4>
       <ul>
-        <li>Designed and deployed Neo4j-backed RAG chatbot (18M nodes, 54M edges) with LangGraph + Gemini — 6h → 38s query turnaround</li>
+        <li>Designed and deployed Neo4j-backed RAG chatbot (220M nodes, 80M edges) with React, FastAPI, LangGraph, Gemini, Claude, and Neo4j MCP tools — 6h → 38s query turnaround</li>
         <li>Automated compliance review with a RAG pipeline: 4 hours → 10 minutes</li>
         <li>Instituted responsible-AI guardrails (bias scans, toxicity filters) — 100% policy compliance</li>
       </ul>

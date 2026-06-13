@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>spark-ai-stack — Case Study</title>
+<meta name="description" content="A self-hosted AI content pipeline on NVIDIA DGX Spark using Telegram, n8n, Gemma 4, Flask, Manim, Kokoro TTS, and FFmpeg.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="wordmark" href="index.html">SHUV</a>
+  <div class="nav-links">
+    <a href="index.html#work">Work</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#learn">Learn</a>
+    <a href="index.html#capabilities">Capabilities</a>
+    <a href="index.html#experience">Experience</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<header class="cs-hero" data-screen-label="Case Study Hero">
+  <div class="crumb">
+    <a href="index.html#projects">← BACK</a>
+    <span>/</span>
+    <span>CASE STUDY 02</span>
+  </div>
+  <h1>
+    <span class="reveal-line"><span>Self-hosted</span></span>
+    <span class="reveal-line"><span class="accent">AI video stack.</span></span>
+  </h1>
+  <div class="cs-facts">
+    <div class="cs-fact">
+      <div class="k">Project</div>
+      <div class="v">spark-ai-stack</div>
+    </div>
+    <div class="cs-fact">
+      <div class="k">Hardware</div>
+      <div class="v">NVIDIA DGX Spark</div>
+    </div>
+    <div class="cs-fact">
+      <div class="k">Stack</div>
+      <div class="v">Telegram · n8n · Ollama · Gemma 4 · Flask · Manim · Kokoro · FFmpeg</div>
+    </div>
+    <div class="cs-fact">
+      <div class="k">Status</div>
+      <div class="v">Local-first build</div>
+    </div>
+  </div>
+</header>
+
+<section class="section" data-screen-label="Case Study Body">
+  <div class="cs-body">
+    <div class="cs-block io-reveal">
+      <h3>The Goal</h3>
+      <div>
+        <p>spark-ai-stack is a fully self-hosted AI content pipeline running on an NVIDIA DGX Spark. Send a tech topic through Telegram, let a local Gemma 4 model write the script, render animations with Manim, generate narration with Kokoro TTS, merge the assets with FFmpeg, and send the finished video back to Telegram for review.</p>
+        <p>The design principle is simple: no hosted model APIs, no per-video inference cost, and no handoff between separate tools once the workflow starts.</p>
+      </div>
+    </div>
+
+    <div class="cs-block io-reveal">
+      <h3>User Flow</h3>
+      <div>
+        <div class="cs-flow-list">
+          <div><span>01</span><strong>Prompt in Telegram</strong><p>Send a topic like "Python decorators" to the Telegram bot.</p></div>
+          <div><span>02</span><strong>n8n validates the request</strong><p>The workflow sends a working message, asks Gemma 4 whether the topic is technical, and rejects off-topic requests.</p></div>
+          <div><span>03</span><strong>Gemma 4 writes the script</strong><p>The local model produces narration plus scene instructions using a constrained animation schema.</p></div>
+          <div><span>04</span><strong>Render server builds assets</strong><p>A Flask service turns scene data into Manim animations and Kokoro voiceover.</p></div>
+          <div><span>05</span><strong>FFmpeg merges the video</strong><p>Rendered animation and audio are composed into a final MP4.</p></div>
+          <div><span>06</span><strong>Telegram returns review copy</strong><p>The finished short lands back in Telegram, ready to inspect before upload.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-block io-reveal">
+      <h3>Architecture</h3>
+      <div>
+        <div class="arch-shell">
+          <div class="arch-flow" aria-label="Interactive architecture diagram for spark-ai-stack">
+            <button class="arch-node arch-node--react is-active" type="button" aria-pressed="true" data-arch-kicker="01 / Trigger" data-arch-title="Telegram bot interface" data-arch-body="Telegram is the operator surface: submit a topic, receive progress updates, and review the rendered MP4 without leaving chat." data-arch-stack="Telegram Bot|Webhook|Review loop">
+              <span>01 / Trigger</span>
+              <strong>Telegram</strong>
+              <small>Topic input + review channel</small>
+            </button>
+
+            <button class="arch-node arch-node--api" type="button" aria-pressed="false" data-arch-kicker="02 / Orchestration" data-arch-title="n8n workflow" data-arch-body="n8n coordinates topic validation, script generation, render-server calls, and Telegram responses in one observable workflow." data-arch-stack="n8n|Workflow state|HTTP nodes">
+              <span>02 / Orchestration</span>
+              <strong>n8n</strong>
+              <small>Validation, routing, render call</small>
+            </button>
+
+            <button class="arch-node arch-node--agent" type="button" aria-pressed="false" data-arch-kicker="03 / Model Server" data-arch-title="Ollama on Docker" data-arch-body="Ollama serves Gemma 4 26B with GPU acceleration from a local container, keeping script generation self-hosted." data-arch-stack="Ollama|Docker|GPU acceleration">
+              <span>03 / Model Server</span>
+              <strong>Ollama</strong>
+              <small>Local model serving</small>
+            </button>
+
+            <button class="arch-node arch-node--model" type="button" aria-pressed="false" data-arch-kicker="04 / Generation" data-arch-title="Gemma 4 script writer" data-arch-body="Gemma 4 classifies topics and writes structured short-form scripts with animation types selected from tested templates." data-arch-stack="Gemma 4 26B|Script writing|Topic classification">
+              <span>04 / Generation</span>
+              <strong>Gemma 4</strong>
+              <small>Script + scene schema</small>
+            </button>
+
+            <button class="arch-node arch-node--planner" type="button" aria-pressed="false" data-arch-kicker="05 / Render API" data-arch-title="Flask render server" data-arch-body="A host-side Flask service receives scene data from n8n, calls Manim and Kokoro, tracks jobs, and returns the generated video path." data-arch-stack="Flask|Port 7860|Render jobs">
+              <span>05 / Render API</span>
+              <strong>Flask server</strong>
+              <small>Job orchestration</small>
+            </button>
+
+            <button class="arch-node arch-node--mcp" type="button" aria-pressed="false" data-arch-kicker="06 / Animation" data-arch-title="Manim templates" data-arch-body="Gemma never writes arbitrary Manim code. It picks from 12 pre-built templates and fills structured data, improving render reliability." data-arch-stack="Manim|12 templates|Structured scene data">
+              <span>06 / Animation</span>
+              <strong>Manim</strong>
+              <small>Deterministic visuals</small>
+            </button>
+
+            <button class="arch-node arch-node--data" type="button" aria-pressed="false" data-arch-kicker="07 / Audio" data-arch-title="Kokoro TTS" data-arch-body="Kokoro generates natural-sounding narration locally, keeping voiceover generation inside the same self-hosted stack." data-arch-stack="Kokoro TTS|82M params|Local voiceover">
+              <span>07 / Audio</span>
+              <strong>Kokoro TTS</strong>
+              <small>Local narration</small>
+            </button>
+
+            <button class="arch-node arch-node--answer" type="button" aria-pressed="false" data-arch-kicker="08 / Output" data-arch-title="FFmpeg final MP4" data-arch-body="FFmpeg merges animation and audio into a final 60-second MP4 that n8n sends back to Telegram for review." data-arch-stack="FFmpeg|MP4 output|Telegram delivery">
+              <span>08 / Output</span>
+              <strong>FFmpeg</strong>
+              <small>Merge + return MP4</small>
+            </button>
+          </div>
+
+          <aside class="arch-detail" aria-live="polite">
+            <span class="arch-detail-kicker">01 / Trigger</span>
+            <h4>Telegram bot interface</h4>
+            <p>Telegram is the operator surface: submit a topic, receive progress updates, and review the rendered MP4 without leaving chat.</p>
+            <div class="arch-detail-stack">
+              <span>Telegram Bot</span>
+              <span>Webhook</span>
+              <span>Review loop</span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-block io-reveal">
+      <h3>Stack</h3>
+      <div>
+        <div class="cs-stack-grid">
+          <div><span>Model serving</span><strong>Ollama + Gemma 4 26B</strong><p>GPU-accelerated local script generation and topic classification.</p></div>
+          <div><span>Workflow</span><strong>n8n</strong><p>Coordinates Telegram triggers, LLM calls, render requests, and response delivery.</p></div>
+          <div><span>Render API</span><strong>Flask</strong><p>Host-side service on port 7860 that orchestrates TTS, Manim, and FFmpeg.</p></div>
+          <div><span>Animation</span><strong>Manim</strong><p>Renders code, diagrams, counters, tables, and flow visuals from tested templates.</p></div>
+          <div><span>Voice</span><strong>Kokoro TTS</strong><p>Local narration generation with an 82M-parameter voice model.</p></div>
+          <div><span>Delivery</span><strong>Cloudflare Tunnel + Telegram</strong><p>HTTPS webhook ingress and chat-based review workflow.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-block io-reveal">
+      <h3>Render Reliability</h3>
+      <div>
+        <p>The key reliability decision is that Gemma does not write raw Manim code. The model chooses from 12 pre-built animation templates and provides the data each template needs. That keeps generation creative at the script layer while making rendering deterministic.</p>
+        <div class="cs-template-grid" aria-label="Animation templates">
+          <span>code_type</span>
+          <span>code_compare</span>
+          <span>list_reveal</span>
+          <span>bar_compare</span>
+          <span>box_flow</span>
+          <span>big_keyword</span>
+          <span>vs_split</span>
+          <span>counter_up</span>
+          <span>terminal</span>
+          <span>stack_push</span>
+          <span>tree_diagram</span>
+          <span>table_reveal</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-block io-reveal">
+      <h3>Hardware Budget</h3>
+      <div>
+        <p>The pipeline is sized around the DGX Spark's unified 128 GB memory pool. The README budget leaves enough headroom after the OS, Docker, n8n, Gemma 4 26B, Kokoro, and Manim rendering are active.</p>
+        <div class="cs-results">
+          <div class="cs-result">
+            <div class="v">128 GB</div>
+            <div class="l">unified LPDDR5x memory on DGX Spark</div>
+          </div>
+          <div class="cs-result">
+            <div class="v">20-28 GB</div>
+            <div class="l">Gemma 4 26B loaded through Ollama</div>
+          </div>
+          <div class="cs-result">
+            <div class="v">86+ GB</div>
+            <div class="l">remaining headroom in the README budget</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-block io-reveal">
+      <h3>Operations</h3>
+      <div>
+        <p>Daily operation is intentionally simple: start Docker services, run the render server, open the Cloudflare tunnel, and warm the model to avoid cold-start delay.</p>
+        <div class="cs-code-card">
+          <code>docker compose up -d</code>
+          <code>python3 render-server/server.py</code>
+          <code>cloudflared tunnel --url http://localhost:5678</code>
+          <code>docker exec -it ollama ollama run gemma4:26b "hi"</code>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cs-next">
+  <span class="label">SOURCE</span>
+  <div class="cta-row">
+    <a class="btn btn--ghost" href="index.html#projects">Back to projects →</a>
+    <a class="btn" href="https://github.com/shuv13111/spark-ai-stack" target="_blank" rel="noopener">View GitHub ↗</a>
+  </div>
+</div>
+
+<footer class="site-footer" id="contact">
+  <div class="footer-top">
+    <h2 class="io-reveal">Say<br><a href="mailto:shuvrangshumukhoapdhyay@gmail.com">hello.</a></h2>
+    <div class="footer-card io-reveal" data-delay="120">
+      <img src="images/Face.jpg" alt="Shuvrangshu Mukhopadhyay">
+      <div class="links">
+        <div><a class="primary" href="mailto:shuvrangshumukhoapdhyay@gmail.com">shuvrangshumukhoapdhyay@gmail.com</a></div>
+        <div><a href="https://www.linkedin.com/in/shuv93/" target="_blank" rel="noopener">linkedin.com/in/shuv93</a></div>
+        <div><a href="https://github.com/shuv13111" target="_blank" rel="noopener">github.com/shuv13111</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Shuvrangshu Mukhopadhyay</span>
+    <span>BUILT WITH INTENT</span>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+</body>
+</html>
